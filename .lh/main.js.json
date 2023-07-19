@@ -1,0 +1,30 @@
+{
+    "sourceFile": "main.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1688780762913,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1689002780641,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,4 +17,39 @@\n let approachTitleMask = approachImg.getBoundingClientRect().left - approachTitle.getBoundingClientRect().left\n // console.log(approachTitle.getBoundingClientRect().left)\n // console.log(approachImg.offsetLeft, approachImg.getBoundingClientRect().left)\n approachTitle.style.clipPath = 'inset(0 0 -50px ' + approachTitleMask + 'px )'\n+\n+const tabMq = window.matchMedia('(max-width: 991px)')\n+const tabMq = window.matchMedia('(max-width: 991px)')\n+\n+blogMq.onchange = (e) => {\n+  if (e.matches) {\n+    // 767 or less\n+    aboutBlogSliderInit()\n+  } else {\n+    // more than 767\n+    aboutBlogSlider[0].destroy()\n+  }\n+}\n+const screen = {\n+  mobile: null,\n+  mobileLandscape: window.matchMedia('(max-width: 767px)'),\n+  tablet: window.matchMedia('(max-width: 991px)'),\n+}\n+mqLarge.addEventListener('change', mqHandler)\n+// media query change events\n+for (let [scr, mq] of Object.entries(screen)) {\n+  if (mq) mq.addEventListener('change', mqHandler);\n+}\n+\n+// media query handler function\n+function mqHandler() {\n+ \n+  let size = null;\n+  for (let [scr, mq] of Object.entries(screen)) {\n+    if (!mq || mq.matches) size = scr;\n+  }\n+ \n+  console.log(size);\n+ \n+}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1689002798140,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -35,9 +35,9 @@\n   mobile: null,\n   mobileLandscape: window.matchMedia('(max-width: 767px)'),\n   tablet: window.matchMedia('(max-width: 991px)'),\n }\n-mqLarge.addEventListener('change', mqHandler)\n+// mqLarge.addEventListener('change', mqHandler)\n // media query change events\n for (let [scr, mq] of Object.entries(screen)) {\n   if (mq) mq.addEventListener('change', mqHandler)\n }\n"
+                },
+                {
+                    "date": 1689002954329,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,10 +18,10 @@\n // console.log(approachTitle.getBoundingClientRect().left)\n // console.log(approachImg.offsetLeft, approachImg.getBoundingClientRect().left)\n approachTitle.style.clipPath = 'inset(0 0 -50px ' + approachTitleMask + 'px )'\n \n-const tabMq = window.matchMedia('(max-width: 991px)')\n-const tabMq = window.matchMedia('(max-width: 991px)')\n+// const tabMq = window.matchMedia('(max-width: 991px)')\n+// const tabMq = window.matchMedia('(max-width: 991px)')\n \n blogMq.onchange = (e) => {\n   if (e.matches) {\n     // 767 or less\n"
+                }
+            ],
+            "date": 1688780762913,
+            "name": "Commit-0",
+            "content": "import './style.styl'\nimport { gsap } from 'gsap'\nimport Lenis from '@studio-freight/lenis'\n\nconst lenis = new Lenis()\n\nfunction raf(time) {\n  lenis.raf(time)\n  requestAnimationFrame(raf)\n}\n\nrequestAnimationFrame(raf)\n\nconst approachImg = document.querySelector('.approach-sec__img-wrap')\nconst approachTitle = document.querySelector('.approach-sec__title-fg')\n// approachTitle.style.opacity = '0.5'\nlet approachTitleMask = approachImg.getBoundingClientRect().left - approachTitle.getBoundingClientRect().left\n// console.log(approachTitle.getBoundingClientRect().left)\n// console.log(approachImg.offsetLeft, approachImg.getBoundingClientRect().left)\napproachTitle.style.clipPath = 'inset(0 0 -50px ' + approachTitleMask + 'px )'"
+        }
+    ]
+}
