@@ -33,7 +33,7 @@ const mapBg = sel('.map__bg-svg')
 
 ScrollTrigger.create({
   // markers: true,
-  animation: gsap.timeline().to(introCard, { y: '-70%' }),
+  animation: gsap.timeline().to(introCard, { transform: 'translate(0%, -80%)' }),
   trigger: '.intro-sec',
   start: 'top bottom',
   end: 'bottom top',
@@ -42,15 +42,55 @@ ScrollTrigger.create({
 })
 
 ScrollTrigger.create({
-  markers: true,
-  animation: gsap.timeline().to('.about-sec__item', { borderRadius: '0' }).to(aboutSec, { padding: '0' }, '<'),
+  // markers: true,
+  animation: gsap.timeline().to('.about-sec__item', { borderRadius: '0' }, '<').to(aboutSec, { padding: '0' }, '<'),
   trigger: aboutSec,
   start: 'top top',
-  end: 'bottom top',
+  end: 'bottom center',
   pin: aboutSec,
-  // pinSpacing: true,
+  // anticipatePin: 1,
+  // pinType: 'fixed',
+  // pinSpacing: false,
   // toggleActions: 'play reverse restart reverse',
   scrub: 1,
+})
+
+const mapCards = document.querySelectorAll('.map-sec__card')
+ScrollTrigger.create({
+  // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
+  trigger: mapCards[0],
+  start: 'center center',
+  end: 'top top',
+  pin: mapCards[0],
+  scrub: 1,
+  snap: 0.33,
+})
+ScrollTrigger.create({
+  // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
+  trigger: mapCards[1],
+  start: 'center center',
+  end: 'top top',
+  pin: mapCards[1],
+  scrub: 1,
+  snap: 0.33,
+})
+ScrollTrigger.create({
+  // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
+  trigger: mapCards[2],
+  start: 'center center',
+  end: 'top top',
+  pin: mapCards[2],
+  scrub: 1,
+  snap: 0.33,
+})
+ScrollTrigger.create({
+  startTrigger: '.map-sec',
+  endTrigger: mapCards[2],
+  start: 'top top',
+  end: 'top top',
+  pin: '.map-sec__map',
+  pinSpacing: true,
+  pinType: 'fixed',
 })
 
 // const approachImg = document.querySelector('.approach-sec__img-wrap')
