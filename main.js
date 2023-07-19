@@ -1,6 +1,21 @@
 import './style.styl'
-import { gsap } from 'gsap'
+import gsap from 'gsap'
+import CSSRulePlugin from 'gsap/CSSRulePlugin'
+import ScrollTrigger from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'
+
+const devMode = 0
+gsap.registerPlugin(CSSRulePlugin, ScrollTrigger)
+
+const sel = (e) => document.querySelector(e)
+
+if (devMode) {
+  document.querySelectorAll('[data-video-urls]').forEach((el) => {
+    el.querySelector('video').remove()
+    // el.setAttribute('data-video-urls', '')
+  })
+  console.log('all videos disabled')
+}
 
 const lenis = new Lenis()
 
@@ -10,14 +25,40 @@ function raf(time) {
 }
 
 requestAnimationFrame(raf)
-console.log('qwe')
 
-const approachImg = document.querySelector('.approach-sec__img-wrap')
-const approachTitle = document.querySelector('.approach-sec__title-fg')
+const introCard = sel('.intro-sec__card')
+const aboutSec = sel('.about-sec')
+const mapWrap = sel('.map__map-wrap')
+const mapBg = sel('.map__bg-svg')
+
+ScrollTrigger.create({
+  // markers: true,
+  animation: gsap.timeline().to(introCard, { y: '-70%' }),
+  trigger: '.intro-sec',
+  start: 'top bottom',
+  end: 'bottom top',
+  // toggleActions: 'play reverse restart reverse',
+  scrub: 1,
+})
+
+ScrollTrigger.create({
+  markers: true,
+  animation: gsap.timeline().to('.about-sec__item', { borderRadius: '0' }).to(aboutSec, { padding: '0' }, '<'),
+  trigger: aboutSec,
+  start: 'top top',
+  end: 'bottom top',
+  pin: aboutSec,
+  // pinSpacing: true,
+  // toggleActions: 'play reverse restart reverse',
+  scrub: 1,
+})
+
+// const approachImg = document.querySelector('.approach-sec__img-wrap')
+// const approachTitle = document.querySelector('.approach-sec__title-fg')
 
 const mqInit = () => {
-  let approachTitleMask = approachImg.getBoundingClientRect().left - approachTitle.getBoundingClientRect().left
-  approachTitle.style.clipPath = 'inset(0 0 -50px ' + approachTitleMask + 'px )'
+  // let approachTitleMask = approachImg.getBoundingClientRect().left - approachTitle.getBoundingClientRect().left
+  // approachTitle.style.clipPath = 'inset(0 0 -50px ' + approachTitleMask + 'px )'
 }
 mqInit()
 const screen = {
@@ -52,7 +93,7 @@ function mqHandler() {
   for (let [scr, mq] of Object.entries(screenMq)) {
     if (mq.matches) mqNow = scr
   }
-  console.log(mqNow)
+  // console.log(mqNow)
 }
 mqHandler()
 
