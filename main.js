@@ -10,6 +10,7 @@ function raf(time) {
 }
 
 requestAnimationFrame(raf)
+console.log('qwe')
 
 const approachImg = document.querySelector('.approach-sec__img-wrap')
 const approachTitle = document.querySelector('.approach-sec__title-fg')
