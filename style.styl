@@ -4,3 +4,18 @@
 
 .approach-sec__topnav__item--active a
   color white !important
+
+.map-sec__card
+  // opacity 0.5
+  // z-index unset
+
+.map-sec__card::before
+  position absolute
+  content ''
+  width calc(100% - 30px)
+  height calc(100% - 30px)
+  border-radius 16px
+  top 60px
+  left 60px
+  z-index -1
+  border 3px solid #FFA756
