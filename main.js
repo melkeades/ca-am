@@ -4,10 +4,11 @@ import CSSRulePlugin from 'gsap/CSSRulePlugin'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'
 
-const devMode = 0
+const devMode = 1
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger)
 
 const sel = (e) => document.querySelector(e)
+const selAll = (e) => document.querySelectorAll(e)
 
 if (devMode) {
   document.querySelectorAll('[data-video-urls]').forEach((el) => {
@@ -28,8 +29,6 @@ requestAnimationFrame(raf)
 
 const introCard = sel('.intro-sec__card')
 const aboutSec = sel('.about-sec')
-const mapWrap = sel('.map__map-wrap')
-const mapBg = sel('.map__bg-svg')
 
 ScrollTrigger.create({
   // markers: true,
@@ -61,36 +60,88 @@ ScrollTrigger.create({
   trigger: mapCards[0],
   start: 'center center',
   end: 'top top',
-  pin: mapCards[0],
+  // pin: mapCards[0],
   scrub: 1,
-  snap: 0.33,
+  // snap: {
+  //   // snapTo: 'labels', // snap to the closest label in the timeline
+  //   duration: { min: 0.2, max: 1 }, // the snap animation should be at least 0.2 seconds, but no more than 3 seconds (determined by velocity)
+  //   delay: 0.2, // wait 0.2 seconds from the last scroll event before doing the snapping
+  //   // ease: 'power1.inOut', // the ease of the snap animation ("power3" by default)
+  // },
 })
 ScrollTrigger.create({
   // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
   trigger: mapCards[1],
   start: 'center center',
   end: 'top top',
-  pin: mapCards[1],
+  // pin: mapCards[1],
   scrub: 1,
-  snap: 0.33,
+  // snap: 1,
 })
 ScrollTrigger.create({
   // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
   trigger: mapCards[2],
   start: 'center center',
   end: 'top top',
-  pin: mapCards[2],
+  // pin: mapCards[2],
   scrub: 1,
-  snap: 0.33,
+  // snap: 1,
 })
+const mapSec = sel('.map-sec')
+const map = sel('.map-sec__map')
+const mapWrap = sel('.map-sec__map-wrap')
+const mapWrapIn = sel('.map-sec__map-wrapIn')
+const mapFg = sel('.map__fg')
+const mapFgWrap = sel('.map__fg-wrap')
+const mapDots = selAll('.map__dot')
+const mapBg = sel('.map__bg-img')
+const mapBgWrap = sel('.map__bg-wrap')
+
 ScrollTrigger.create({
-  startTrigger: '.map-sec',
-  endTrigger: mapCards[2],
-  start: 'top top',
+  animation: gsap
+    .timeline()
+    .to(mapFg, { y: '-20%' })
+    .to(mapBg, { y: '-5%' }, '<')
+    .to(mapFg, { scale: 1.2 }, '<')
+    .to(mapBg, { scale: 1.2 * 0.8 }, '<')
+    .addLabel('mapInitDone'),
+  trigger: mapSec,
+  start: 'top 80%',
   end: 'top top',
-  pin: '.map-sec__map',
-  pinSpacing: true,
-  pinType: 'fixed',
+  scrub: 1,
+  snap: 1,
+})
+
+const mapScrollTl = gsap
+  .timeline({ defaults: { ease: 'none', duration: 9 } })
+  // .set('.map-sec__cards', { opacity: 0 })
+  .addLabel('card-a', '>')
+  .to(mapFgWrap, { y: '-50vh', duration: 3 })
+  .to(mapBgWrap, { y: -50 * 0.8 + 'vh', duration: 3 }, '<')
+  .addLabel('card-b', '>')
+  .set([mapFgWrap, mapBgWrap], { transformOrigin: '100% 50%' })
+  .to(mapFgWrap, { scale: 1.9, duration: 3 })
+  .to(mapBgWrap, { scale: 1.9 * 0.8, duration: 3 }, '<')
+  .addLabel('card-c', '>')
+  .to(mapFgWrap, { y: '-85vh', duration: 3 })
+  .to(mapBgWrap, { y: -85 * 0.8 + 'vh', duration: 3 }, '<')
+  .addLabel('finish', '>')
+
+ScrollTrigger.create({
+  animation: mapScrollTl,
+  trigger: mapSec,
+  // startTrigger: '.map-sec',
+  // endTrigger: mapCards[2],
+  start: 'top top',
+  end: 'bottom+=1000 top',
+  pin: '.map-sec__map-wrap',
+  scrub: 1,
+  snap: 'labelsDirectional',
+  duration: { min: 0.2, max: 1 },
+  // delay: 0.0,
+  // anticipatePin: true,
+  // pinSpacing: true,
+  // pinType: 'fixed',
 })
 
 // const approachImg = document.querySelector('.approach-sec__img-wrap')
