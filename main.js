@@ -4,18 +4,26 @@ import CSSRulePlugin from 'gsap/CSSRulePlugin'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'
 
-const devMode = 0
+const devMode = 1
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger)
 
 const sel = (e) => document.querySelector(e)
 const selAll = (e) => document.querySelectorAll(e)
 
+const videoHero = sel('.video-hero')
+const introSec = sel('.intro-sec')
+const aboutSec = sel('.about-sec')
+
 if (devMode) {
+  const devRemoveList = [videoHero, introSec]
   document.querySelectorAll('[data-video-urls]').forEach((el) => {
-    el.querySelector('video').remove()
-    // el.setAttribute('data-video-urls', '')
+    // el.querySelector('video').remove()
+    // devRemoveList.push(el)
   })
-  console.log('all videos disabled')
+  devRemoveList.forEach((el) => {
+    el.remove()
+  })
+  // console.log('all videos disabled ')
 }
 
 const lenis = new Lenis()
@@ -28,7 +36,6 @@ function raf(time) {
 requestAnimationFrame(raf)
 
 const introCard = sel('.intro-sec__card')
-const aboutSec = sel('.about-sec')
 
 ScrollTrigger.create({
   // markers: true,
@@ -54,36 +61,22 @@ ScrollTrigger.create({
   scrub: 1,
 })
 
-const mapCards = document.querySelectorAll('.map-sec__card')
-ScrollTrigger.create({
-  // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
-  trigger: mapCards[0],
-  start: 'center center',
-  end: 'top top',
-  // pin: mapCards[0],
-  scrub: 1,
-  // snap: {
-  //   // snapTo: 'labels', // snap to the closest label in the timeline
-  //   duration: { min: 0.2, max: 1 }, // the snap animation should be at least 0.2 seconds, but no more than 3 seconds (determined by velocity)
-  //   delay: 0.2, // wait 0.2 seconds from the last scroll event before doing the snapping
-  //   // ease: 'power1.inOut', // the ease of the snap animation ("power3" by default)
-  // },
+const mapCards = selAll('.map-sec__card')
+const mapCardsWrap = selAll('.map-sec__card-wrap')
+const mapCardsWrapIn = selAll('.map-sec__card-wrapin')
+
+mapCardsWrap.forEach((el) => {
+  gsap.set(el, { opacity: 0, position: 'fixed', top: '55%', translateY: '-50%' })
+  // el.style.opacity = 0
+  // el.style.display = 'none'
 })
+
 ScrollTrigger.create({
   // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
   trigger: mapCards[1],
   start: 'center center',
   end: 'top top',
   // pin: mapCards[1],
-  scrub: 1,
-  // snap: 1,
-})
-ScrollTrigger.create({
-  // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
-  trigger: mapCards[2],
-  start: 'center center',
-  end: 'top top',
-  // pin: mapCards[2],
   scrub: 1,
   // snap: 1,
 })
@@ -97,35 +90,101 @@ const mapDots = selAll('.map__dot')
 const mapBg = sel('.map__bg-img')
 const mapBgWrap = sel('.map__bg-wrap')
 
+const cardSpeed = 0.5
+
 ScrollTrigger.create({
   animation: gsap
-    .timeline()
-    .to(mapFg, { y: '-20%' })
-    .to(mapBg, { y: '-5%' }, '<')
-    .to(mapFg, { scale: 1.2 }, '<')
-    .to(mapBg, { scale: 1.2 * 0.84 }, '<')
-    .addLabel('mapInitDone'),
+    .timeline({ defaults: { ease: 'none', duration: 5 } })
+    // .set([...mapCards], { opacity: 0.001 }, '<')
+    .to(mapFg, { y: '-20vh' }, 0)
+    .to(mapBg, { y: '-10vh' }, 0)
+    .to(mapFg, { scale: 1.2 }, 0)
+    .to(mapBg, { scale: 1.2 * 0.84 }, 0)
+    .to(
+      {},
+      {
+        onComplete: () => gsap.timeline().to(mapCardsWrap[0], { opacity: 1, top: '50%', duration: cardSpeed }),
+        onReverseComplete: () => {
+          // gsap.killTweensOf(mapCardsWrap[0])
+          gsap.timeline().to(mapCardsWrap[0], { opacity: 0, top: '55%', duration: cardSpeed })
+        },
+        duration: 0.001,
+      },
+      3
+    )
+    .addLabel('mapIntroDone', '>'),
   trigger: mapSec,
   start: 'top 80%',
   end: 'top top',
   scrub: 1,
-  snap: 1,
+  // snap: 1,
 })
-
 const mapScrollTl = gsap
-  .timeline({ defaults: { ease: 'none', duration: 9 } })
-  // .set('.map-sec__cards', { opacity: 0 })
-  .addLabel('card-a', '>')
-  .to(mapFgWrap, { y: '-50vh', duration: 3 })
-  .to(mapBgWrap, { y: -50 * 0.8 + 'vh', duration: 3 }, '<')
-  .addLabel('card-b', '>')
-  .set([mapFgWrap, mapBgWrap], { transformOrigin: '100% 50%' })
-  .to(mapFgWrap, { scale: 1.9, duration: 3 })
-  .to(mapBgWrap, { scale: 1.9 * 0.8, duration: 3 }, '<')
-  .addLabel('card-c', '>')
-  .to(mapFgWrap, { y: '-85vh', duration: 3 })
-  .to(mapBgWrap, { y: -85 * 0.8 + 'vh', duration: 3 }, '<')
-  .addLabel('finish', '>')
+  .timeline({ defaults: { ease: 'none', duration: 5 } })
+  .addLabel('card-a')
+  .to(mapFgWrap, { y: '-60vh' }, 0)
+  .to(mapBgWrap, { y: -60 * 0.8 + 'vh' }, 0)
+  .to(
+    {},
+    {
+      onComplete: () => gsap.timeline().to(mapCardsWrap[0], { opacity: 0, top: '45%', duration: cardSpeed }),
+      onReverseComplete: () => gsap.timeline().to(mapCardsWrap[0], { opacity: 1, top: '50%', duration: cardSpeed }),
+      duration: 0.001,
+    },
+    2.5 // DO NOT OVERLAP EVENT TWEENS!!! EVA
+  )
+  // .to(mapCardsWrapIn[0], { opacity: 0, y: '-5vh', duration: 1 }, 1)
+  .addLabel('card-b', 5)
+  .to(
+    {},
+    {
+      onStart: () => gsap.timeline().to(mapCardsWrap[1], { opacity: 1, top: '50%', duration: cardSpeed }),
+      onReverseComplete: () => {
+        // gsap.killTweensOf(mapCardsWrap[1])
+        gsap.timeline().to(mapCardsWrap[1], { opacity: 0, top: '55%', duration: cardSpeed })
+      },
+      duration: 0.001,
+    },
+    3.5
+  )
+  .set([mapFgWrap, mapBgWrap], { transformOrigin: '100% 60%' })
+  .to(mapFgWrap, { scale: 1.9 }, 5)
+  .to(mapBgWrap, { scale: 1.9 * 0.8 }, 5)
+  .to(
+    {},
+    {
+      onComplete: () => gsap.timeline().to(mapCardsWrap[1], { opacity: 0, top: '45%', duration: cardSpeed }),
+      onReverseComplete: () => gsap.timeline().to(mapCardsWrap[1], { opacity: 1, top: '50%', duration: cardSpeed }),
+      duration: 0.001,
+    },
+    7.5
+  )
+  .addLabel('card-c', 10)
+  .to(
+    {},
+    {
+      onStart: () => gsap.timeline().to(mapCardsWrap[2], { opacity: 1, top: '50%', duration: cardSpeed }),
+      onReverseComplete: () => {
+        // gsap.killTweensOf(mapCardsWrap[2])
+        gsap.timeline().to(mapCardsWrap[2], { opacity: 0, top: '55%', duration: cardSpeed })
+      },
+      duration: 0.001,
+    },
+    8.5
+  )
+  .to(mapFgWrap, { y: '-85vh' }, 10)
+  .to(mapBgWrap, { y: -85 * 0.8 + 'vh' }, 10)
+  .to(
+    {},
+    {
+      onStart: () => gsap.timeline().to(mapCardsWrap[2], { opacity: 0, top: '45%', duration: cardSpeed }),
+      // onComplete: () => gsap.timeline().set(mapCardsWrap[1], { opacity: 0, top: '60%' }),
+      onReverseComplete: () => gsap.timeline().to(mapCardsWrap[2], { opacity: 1, top: '50%', duration: cardSpeed }),
+      duration: 0.001,
+    },
+    14
+  )
+  .addLabel('finish', 15)
 
 ScrollTrigger.create({
   animation: mapScrollTl,
@@ -136,7 +195,7 @@ ScrollTrigger.create({
   end: 'bottom+=1000 top',
   pin: '.map-sec__map-wrap',
   scrub: 1,
-  snap: 'labelsDirectional',
+  // snap: 'labelsDirectional',
   duration: { min: 0.2, max: 1 },
   // delay: 0.0,
   // anticipatePin: true,
