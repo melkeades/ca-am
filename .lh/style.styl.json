@@ -1,0 +1,26 @@
+{
+    "sourceFile": "style.styl",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1690002223122,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1690002294175,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,26 @@\n+:root\n+  margin 0\n+  background #372d4e\n+\n+.approach-sec__topnav__item--active a\n+  color white !important\n+\n+.map-sec__card\n+  // opacity 0.5\n+  // z-index unset\n+\n+.map-sec__card::before\n+  position absolute\n+  content ''\n+  width calc(100% - 30px)\n+  height calc(100% - 30px)\n+  border-radius 16px\n+  top 60px\n+  left 60px\n+  z-index -1 !important\n+  border 3px solid #FFA756\n+\n+.map__dot--active\n+  .map__dot__line\n+    opacity 1 !important\n+    width 1px\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1690002368137,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,27 @@\n+:root\n+  margin 0\n+  background #372d4e\n+\n+.approach-sec__topnav__item--active a\n+  color white !important\n+\n+.map-sec__card\n+  // opacity 0.5\n+  // z-index unset\n+\n+.map-sec__card::before\n+  position absolute\n+  content ''\n+  width calc(100% - 30px)\n+  height calc(100% - 30px)\n+  border-radius 16px\n+  top 60px\n+  left 60px\n+  z-index -1 !important\n+  border 3px solid #FFA756\n+\n+.map__dot--active\n+  .map__dot__line\n+    opacity 1 !important\n+    width 1px\n+    transition-duration 0.1s\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1690002223121,
+            "name": "Commit-0",
+            "content": ":root\n  margin 0\n  background #372d4e\n\n.approach-sec__topnav__item--active a\n  color white !important\n\n.map-sec__card\n  // opacity 0.5\n  // z-index unset\n\n.map-sec__card::before\n  position absolute\n  content ''\n  width calc(100% - 30px)\n  height calc(100% - 30px)\n  border-radius 16px\n  top 60px\n  left 60px\n  z-index -1 !important\n  border 3px solid #FFA756\n\n.map__dot--active\n  .map__dot__line\n    opacity 1 !important\n    width 1px !important"
+        }
+    ]
+}
