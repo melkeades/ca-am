@@ -4,7 +4,7 @@ import CSSRulePlugin from 'gsap/CSSRulePlugin'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'
 
-const devMode = 0
+const devMode = 1
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger)
 
 const sel = (e) => document.querySelector(e)
@@ -129,7 +129,7 @@ const mapScrollInitTl = gsap
   )
   .addLabel('mapIntroDone', '>')
 
-const mapInitSt = ScrollTrigger.create({
+const mapInitStAnimation = ScrollTrigger.create({
   animation: mapScrollInitTl,
   trigger: mapSec$,
   start: 'top 80%',
@@ -231,7 +231,7 @@ const mapScrollTl = gsap
   )
   .addLabel('finish', 15)
 
-const mapSt = ScrollTrigger.create({
+const mapStAnimation = ScrollTrigger.create({
   animation: mapScrollTl,
   trigger: mapSec$,
   // startTrigger: '.map-sec',
@@ -253,12 +253,15 @@ const observer = new MutationObserver((mutations) => {
     // if (mutationRecord.target.className === mapDotActive_) {
     if (mutation.target.classList.contains(mapDotActive_)) {
       window.addEventListener('scroll', () => {
-        if (mapSt.isActive || mapInitSt.isActive) {
-          const scale1 = gsap.getProperty(mapFg$, 'scale')
-          const scale2 = gsap.getProperty(mapFgWrap$, 'scale')
-          const lineWidth = (mutation.target.getBoundingClientRect().left - mapCards$[0].getBoundingClientRect().right - 30) / (scale1 * scale2)
-          console.log(scale1, scale2, lineWidth)
-          mutation.target.querySelector('.' + mapDotLine_).style.width = lineWidth + 'px'
+        if (mapStAnimation.isActive || mapInitStAnimation.isActive) {
+          const mapFgScale = gsap.getProperty(mapFg$, 'scale')
+          const mapFgWrapScale = gsap.getProperty(mapFgWrap$, 'scale')
+          const lineWidth = (mutation.target.getBoundingClientRect().left - mapCards$[0].getBoundingClientRect().right - 30) / (mapFgScale * mapFgWrapScale)
+          console.log(mapFgScale, window.getComputedStyle(mapFg$).getPropertyValue(display), lineWidth)
+          // console.log(mapFgScale, mapFgWrapScale, lineWidth)
+          // mutation.target.querySelector('.' + mapDotLine_).style.width = lineWidth + 'px'
+          const line = mutation.target.querySelector('.' + mapDotLine_)
+          gsap.timeline().fromTo(line, { width: 0 }, { width: lineWidth, ease: 'none' }, 0)
         }
       })
     }
