@@ -5,11 +5,7 @@
 .approach-sec__topnav__item--active a
   color white !important
 
-.map-sec__card
-  // opacity 0.5
-  // z-index unset
-
-.map-sec__card::before
+.map-sec__card::before, .features-sec__img-wrap::before
   position absolute
   content ''
   width calc(100% - 30px)
@@ -20,8 +16,18 @@
   z-index -1 !important
   border 3px solid #FFA756
 
+.features-sec__img-wrap::before
+  z-index 10 !important
+
 .map__dot--active
   .map__dot__line
     opacity 1 !important
     width 1px
     transition-duration 0.1s
+
+.features-sec__item.is-reversed
+  .features-sec__info
+    margin-left auto !important
+
+  .features-sec__img-wrap
+    margin-right 100px !important

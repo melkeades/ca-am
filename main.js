@@ -2,10 +2,11 @@ import './style.styl'
 import gsap from 'gsap'
 import CSSRulePlugin from 'gsap/CSSRulePlugin'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import Flip from 'gsap/Flip'
 import Lenis from '@studio-freight/lenis'
 
-const devMode = 1
-gsap.registerPlugin(CSSRulePlugin, ScrollTrigger)
+const devMode = 0
+gsap.registerPlugin(CSSRulePlugin, ScrollTrigger, Flip)
 
 const sel = (e) => document.querySelector(e)
 const selAll = (e) => document.querySelectorAll(e)
@@ -13,9 +14,11 @@ const selAll = (e) => document.querySelectorAll(e)
 const videoHero$ = sel('.video-hero')
 const introSec$ = sel('.intro-sec')
 const aboutSec$ = sel('.about-sec')
+const mapSec$ = sel('.map-sec')
+const featuresSec$ = sel('.features-sec')
 
 if (devMode) {
-  const devRemoveList = [videoHero$, introSec$]
+  const devRemoveList = [videoHero$, introSec$, aboutSec$, mapSec$]
   document.querySelectorAll('[data-video-urls]').forEach((el) => {
     // el.querySelector('video').remove()
     // devRemoveList.push(el)
@@ -23,6 +26,7 @@ if (devMode) {
   devRemoveList.forEach((el) => {
     el.remove()
   })
+  sel('.page-wrapper').style.paddingTop = '80vh'
   // console.log('all videos disabled ')
 }
 
@@ -43,22 +47,18 @@ ScrollTrigger.create({
   trigger: '.intro-sec',
   start: 'top bottom',
   end: 'bottom top',
-  // toggleActions: 'play reverse restart reverse',
   scrub: 1,
 })
 
 ScrollTrigger.create({
-  // markers: true,
   animation: gsap.timeline().to('.about-sec__item', { borderRadius: '0' }, '<').to(aboutSec$, { padding: '0' }, '<'),
   trigger: aboutSec$,
   start: 'top top',
   end: 'bottom center',
   pin: aboutSec$,
+  scrub: 1,
   // anticipatePin: 1,
   // pinType: 'fixed',
-  // pinSpacing: false,
-  // toggleActions: 'play reverse restart reverse',
-  scrub: 1,
 })
 
 const mapCards$ = selAll('.map-sec__card')
@@ -88,7 +88,6 @@ const mapDotC_ = 'map__dot--usibelli'
 const mapDotActive_ = 'map__dot--active'
 const mapDotLine_ = 'map__dot__line'
 
-const mapSec$ = sel('.map-sec')
 const map$ = sel('.map-sec__map')
 const mapWrap$ = sel('.map-sec__map-wrap')
 const mapWrapIn$ = sel('.map-sec__map-wrapIn')
@@ -257,11 +256,11 @@ const observer = new MutationObserver((mutations) => {
           const mapFgScale = gsap.getProperty(mapFg$, 'scale')
           const mapFgWrapScale = gsap.getProperty(mapFgWrap$, 'scale')
           const lineWidth = (mutation.target.getBoundingClientRect().left - mapCards$[0].getBoundingClientRect().right - 30) / (mapFgScale * mapFgWrapScale)
-          console.log(mapFgScale, window.getComputedStyle(mapFg$).getPropertyValue(display), lineWidth)
+          // console.log(mapFgScale, window.getComputedStyle(mapFg$).getPropertyValue(display), lineWidth)
           // console.log(mapFgScale, mapFgWrapScale, lineWidth)
-          // mutation.target.querySelector('.' + mapDotLine_).style.width = lineWidth + 'px'
-          const line = mutation.target.querySelector('.' + mapDotLine_)
-          gsap.timeline().fromTo(line, { width: 0 }, { width: lineWidth, ease: 'none' }, 0)
+          mutation.target.querySelector('.' + mapDotLine_).style.width = lineWidth + 'px'
+          // const line = mutation.target.querySelector('.' + mapDotLine_)
+          // gsap.timeline().fromTo(line, { width: 0 }, { width: lineWidth, ease: 'none' }, 0)
         }
       })
     }
@@ -271,10 +270,33 @@ const observer = new MutationObserver((mutations) => {
 for (let mapDot of mapDots$) {
   observer.observe(mapDot, { attributes: true, attributeFilter: ['class'] })
 }
-// console.log(mapDotActive_)
 
-// const approachImg = document.querySelector('.approach-sec__img-wrap')
-// const approachTitle = document.querySelector('.approach-sec__title-fg')
+const featuresItem$ = selAll('.features-sec__item')
+const featuresImg_ = 'features-sec__img'
+const featuresImgWrap_ = 'features-sec__img-wrap'
+const featuresInfo_ = 'features-sec__info'
+
+featuresItem$.forEach((item) => {
+  const img = item.querySelector('.' + featuresImg_)
+  const imgWrap = item.querySelector('.' + featuresImgWrap_)
+  const info = item.querySelector('.' + featuresInfo_)
+  const featuresScrollTl = gsap
+    .timeline({ defaults: { ease: 'power2.out', duration: 2 } })
+    .to(imgWrap, { marginLeft: 80, marginRight: 80 }, '0')
+    .from(imgWrap, { width: '100%' }, '0')
+    // .to(imgWrap, { paddingLeft: '80px', paddingRight: '80px' }, '0')
+    .from(info, { opacity: 0, y: 100 }, '0')
+  ScrollTrigger.create({
+    animation: featuresScrollTl,
+    trigger: item,
+    start: 'top 80%',
+    // end: 'top 15%',
+    // scrub: 1,
+    // snap: 1,
+    duration: { min: 0.2, max: 1 },
+  })
+  // gsap.from(imgWrap, { width: '100%', duration: 1, scrollTrigger: { trigger: imgWrap, start: 'top 85%', end: 'top 15%', scrub: true } })
+})
 
 const mqInit = () => {
   // let approachTitleMask = approachImg.getBoundingClientRect().left - approachTitle.getBoundingClientRect().left
