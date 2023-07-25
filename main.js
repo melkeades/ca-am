@@ -5,7 +5,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 import Flip from 'gsap/Flip'
 import Lenis from '@studio-freight/lenis'
 
-const devMode = 0
+const devMode = 1
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger, Flip)
 
 const sel = (e) => document.querySelector(e)
@@ -18,16 +18,15 @@ const mapSec$ = sel('.map-sec')
 const featuresSec$ = sel('.features-sec')
 
 if (devMode) {
-  const devRemoveList = [videoHero$, introSec$, aboutSec$, mapSec$]
+  const devRemoveList = [videoHero$, introSec$]
   document.querySelectorAll('[data-video-urls]').forEach((el) => {
-    // el.querySelector('video').remove()
-    // devRemoveList.push(el)
+    el.querySelector('video').remove()
   })
   devRemoveList.forEach((el) => {
     el.remove()
   })
   sel('.page-wrapper').style.paddingTop = '80vh'
-  // console.log('all videos disabled ')
+  console.log('dev mode')
 }
 
 const lenis = new Lenis()
@@ -51,7 +50,8 @@ ScrollTrigger.create({
 })
 
 ScrollTrigger.create({
-  animation: gsap.timeline().to('.about-sec__item', { borderRadius: '0' }, '<').to(aboutSec$, { padding: '0' }, '<'),
+  // animation: gsap.timeline().to('.about-sec__item', { borderRadius: '0' }, '<').to(aboutSec$, { padding: '0' }, '<'),
+  animation: gsap.timeline().to('.about-sec__item-wrap', { borderRadius: '0', top: '0', bottom: '0', left: '0', right: '0' }, '<'),
   trigger: aboutSec$,
   start: 'top top',
   end: 'bottom center',
@@ -67,20 +67,19 @@ const mapCardsWrapIn$ = selAll('.map-sec__card-wrapin')
 
 mapCardsWrap$.forEach((el) => {
   gsap.set(el, { opacity: 0, position: 'fixed', top: '55%', translateY: '-50%' })
-  // el.style.opacity = 0
-  // el.style.display = 'none'
 })
 
-ScrollTrigger.create({
-  // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
-  trigger: mapCards$[1],
-  start: 'center center',
-  end: 'top top',
-  // pin: mapCards[1],
-  scrub: 1,
-  // snap: 1,
-})
-const cardSpeed = 0.5
+// ScrollTrigger.create({
+//   // animation: gsap.timeline().to(mapCards[0], { opacity: 0.5 }),
+//   trigger: mapCards$[1],
+//   start: 'center center',
+//   end: 'top top',
+//   // pin: mapCards[1],
+//   scrub: 1,
+//   // snap: 1,
+// })
+
+const mapSec_ = 'map-sec'
 const mapDot_ = 'map__dot'
 const mapDotA_ = 'map__dot--red-dog'
 const mapDotB_ = 'map__dot--fort-knox'
@@ -99,9 +98,22 @@ const mapBgWrap$ = sel('.map__bg-wrap')
 
 const mapDotRemoveActiveClass = () => {
   const activeDots = [...mapDots$].filter((el) => el.classList.contains(mapDotActive_))
-  activeDots.forEach((el) => {
-    el.classList.remove(mapDotActive_)
-  })
+  activeDots.forEach((el) => el.classList.remove(mapDotActive_))
+}
+const cardSpeed = 0.5
+const mapCardInAni = (i) => {
+  if (elementInViewport('.' + mapSec_)) {
+    // prevent overlapping tweens on fast scroll (end/home on keyboard)
+    gsap.timeline().to(mapCardsWrap$[i], { opacity: 1, top: '50%', duration: cardSpeed })
+    mapDots$[i].classList.add(mapDotActive_)
+  }
+}
+const mapCardOutAni = (i, scrollDirection = 'scrollingDown') => {
+  const direction = scrollDirection === 'scrollingUp' ? '55%' : '45%'
+  // prevent overlapping tweens on fast scroll (end/home on keyboard)
+  gsap.timeline().to(mapCardsWrap$[i], { opacity: 0, top: direction, duration: cardSpeed })
+  // gsap.set(mapCardsWrap$[i], { opacity: 0, top: direction })
+  mapDotRemoveActiveClass()
 }
 mapDotRemoveActiveClass()
 const mapScrollInitTl = gsap
@@ -113,15 +125,10 @@ const mapScrollInitTl = gsap
   .to(
     {},
     {
-      onComplete: () => {
-        gsap.timeline().to(mapCardsWrap$[0], { opacity: 1, top: '50%', duration: cardSpeed })
-        mapDots$[0].classList.add(mapDotActive_)
-      },
-      onReverseComplete: () => {
-        // gsap.killTweensOf(mapCardsWrap[0])
-        gsap.timeline().to(mapCardsWrap$[0], { opacity: 0, top: '55%', duration: cardSpeed })
-        mapDotRemoveActiveClass()
-      },
+      onComplete: mapCardInAni,
+      onCompleteParams: [0],
+      onReverseComplete: mapCardOutAni,
+      onReverseCompleteParams: [0, 'scrollingUp'],
       duration: 0.001,
     },
     3.5
@@ -144,32 +151,23 @@ const mapScrollTl = gsap
   .to(
     {},
     {
-      onComplete: () => {
-        gsap.timeline().to(mapCardsWrap$[0], { opacity: 0, top: '45%', duration: cardSpeed })
-        mapDotRemoveActiveClass()
-      },
-      onReverseComplete: () => {
-        gsap.timeline().to(mapCardsWrap$[0], { opacity: 1, top: '50%', duration: cardSpeed })
-        mapDots$[0].classList.add(mapDotActive_)
-      },
+      onComplete: mapCardOutAni,
+      onCompleteParams: [0],
+      onReverseComplete: mapCardInAni,
+      onReverseCompleteParams: [0],
       duration: 0.001,
     },
-    2.5 // DO NOT OVERLAP EVENT TWEENS!!! EVA
+    2.5 // DO NOT OVERLAP EVENT TWEENS!!!
   )
   // .to(mapCardsWrapIn[0], { opacity: 0, y: '-5vh', duration: 1 }, 1)
   .addLabel('card-b', 5)
   .to(
     {},
     {
-      onComplete: () => {
-        gsap.timeline().to(mapCardsWrap$[1], { opacity: 1, top: '50%', duration: cardSpeed })
-        mapDots$[1].classList.add(mapDotActive_)
-      },
-      onReverseComplete: () => {
-        // gsap.killTweensOf(mapCardsWrap[1])
-        gsap.timeline().to(mapCardsWrap$[1], { opacity: 0, top: '55%', duration: cardSpeed })
-        mapDotRemoveActiveClass()
-      },
+      onComplete: mapCardInAni,
+      onCompleteParams: [1],
+      onReverseComplete: mapCardOutAni,
+      onReverseCompleteParams: [1, 'scrollingUp'],
       duration: 0.001,
     },
     3.5
@@ -180,15 +178,10 @@ const mapScrollTl = gsap
   .to(
     {},
     {
-      onComplete: () => {
-        gsap.timeline().to(mapCardsWrap$[1], { opacity: 0, top: '45%', duration: cardSpeed })
-        mapDotRemoveActiveClass()
-      },
-      onReverseComplete: () => {
-        gsap.timeline().to(mapCardsWrap$[1], { opacity: 1, top: '50%', duration: cardSpeed })
-        mapDots$[1].classList.add(mapDotActive_)
-      },
-
+      onComplete: mapCardOutAni,
+      onCompleteParams: [1],
+      onReverseComplete: mapCardInAni,
+      onReverseCompleteParams: [1],
       duration: 0.001,
     },
     7.5
@@ -197,15 +190,10 @@ const mapScrollTl = gsap
   .to(
     {},
     {
-      onStart: () => {
-        gsap.timeline().to(mapCardsWrap$[2], { opacity: 1, top: '50%', duration: cardSpeed })
-        mapDots$[2].classList.add(mapDotActive_)
-      },
-      onReverseComplete: () => {
-        // gsap.killTweensOf(mapCardsWrap[2])
-        gsap.timeline().to(mapCardsWrap$[2], { opacity: 0, top: '55%', duration: cardSpeed })
-        mapDotRemoveActiveClass()
-      },
+      onComplete: mapCardInAni,
+      onCompleteParams: [2],
+      onReverseComplete: mapCardOutAni,
+      onReverseCompleteParams: [2, 'scrollingUp'],
       duration: 0.001,
     },
     8.5
@@ -215,15 +203,10 @@ const mapScrollTl = gsap
   .to(
     {},
     {
-      onStart: () => {
-        gsap.timeline().to(mapCardsWrap$[2], { opacity: 0, top: '45%', duration: cardSpeed })
-        mapDotRemoveActiveClass()
-      },
-      // onComplete: () => gsap.timeline().set(mapCardsWrap[1], { opacity: 0, top: '60%' }),
-      onReverseComplete: () => {
-        gsap.timeline().to(mapCardsWrap$[2], { opacity: 1, top: '50%', duration: cardSpeed })
-        mapDots$[2].classList.add(mapDotActive_)
-      },
+      onComplete: mapCardOutAni,
+      onCompleteParams: [2],
+      onReverseComplete: mapCardInAni,
+      onReverseCompleteParams: [2],
       duration: 0.001,
     },
     14
@@ -355,3 +338,20 @@ window.addEventListener('resize', () => {
   // if (mqMin('tab')) // console.log('qwe')
   mqInit()
 })
+
+function elementInViewport(el) {
+  const element = el instanceof Element ? el : document.querySelector(el)
+  const bounding = element.getBoundingClientRect()
+  const elementHeight = element.offsetHeight
+  const elementWidth = element.offsetWidth
+  if (
+    bounding.top >= -elementHeight &&
+    bounding.left >= -elementWidth &&
+    bounding.right <= (window.innerWidth || document.documentElement.clientWidth) + elementWidth &&
+    bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) + elementHeight
+  ) {
+    return true
+  } else {
+    return false
+  }
+}
