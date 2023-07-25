@@ -5,7 +5,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 import Flip from 'gsap/Flip'
 import Lenis from '@studio-freight/lenis'
 
-const devMode = 1
+const devMode = 0
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger, Flip)
 
 const sel = (e) => document.querySelector(e)
@@ -89,7 +89,6 @@ const mapDotLine_ = 'map__dot__line'
 
 const map$ = sel('.map-sec__map')
 const mapWrap$ = sel('.map-sec__map-wrap')
-const mapWrapIn$ = sel('.map-sec__map-wrapIn')
 const mapFg$ = sel('.map__fg')
 const mapFgWrap$ = sel('.map__fg-wrap')
 const mapDots$ = selAll('.map__dot')
