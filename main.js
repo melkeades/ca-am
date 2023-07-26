@@ -4,8 +4,9 @@ import CSSRulePlugin from 'gsap/CSSRulePlugin'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import Flip from 'gsap/Flip'
 import Lenis from '@studio-freight/lenis'
+import Swiper from 'swiper'
+import 'swiper/css'
 
-devMode(0)
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger, Flip)
 gsap.config({ force3D: true })
 const sel = (e) => document.querySelector(e)
@@ -16,7 +17,9 @@ const introSec$ = sel('.intro-sec')
 const aboutSec$ = sel('.about-sec')
 const mapSec$ = sel('.map-sec')
 const featuresSec$ = sel('.features-sec')
+let mapSwiper
 
+devMode(0)
 function devMode(mode) {
   if (mode === 0) {
     return
@@ -28,11 +31,11 @@ function devMode(mode) {
     })
     console.log('devMode, removed videos:', i)
   } else if (mode === 2) {
-    const devRemoveList = [videoHero$, introSec$]
+    const devRemoveList = [videoHero$, introSec$, aboutSec$]
     devRemoveList.forEach((el) => {
       el.remove()
     })
-    sel('.page-wrapper').style.paddingTop = '80vh'
+    // sel('.page-wrapper').style.paddingTop = '80vh'
     console.log('devMode: removing sections')
   }
 }
@@ -47,9 +50,15 @@ requestAnimationFrame(raf)
 
 const introCard$ = sel('.intro-sec__card-wrap')
 
-const mapCards$ = selAll('.map-sec__card')
-const mapCardsWrap$ = selAll('.map-sec__card-wrap')
-const mapCardsWrapIn$ = selAll('.map-sec__card-wrapin')
+const mapCardsWrapIn_ = '.map-sec__cards-wrapin' // swiper
+const mapCards_ = '.map-sec__cards' // swiper-wrapper
+const mapCardWrap_ = '.map-sec__card-wrap' // swiper-slide
+const mapCardsWrap$ = sel('.map-sec__cards-wrap') // wrapper over swiper
+const mapCardsWrapIn$ = sel(mapCardsWrapIn_) // swiper
+const mapCards$ = sel(mapCards_) // swiper-wrapper
+const mapCardWrap$a = selAll(mapCardWrap_) // swiper-slide
+const mapCard$a = selAll('.map-sec__card')
+const mapCardWrapIn$a = selAll('.map-sec__card-wrapin')
 
 const mapSec_ = 'map-sec'
 const mapDot_ = 'map__dot'
@@ -63,53 +72,53 @@ const map$ = sel('.map-sec__map')
 const mapWrap$ = sel('.map-sec__map-wrap')
 const mapFg$ = sel('.map__fg')
 const mapFgWrap$ = sel('.map__fg-wrap')
-const mapDots$ = selAll('.map__dot')
+const mapDots$a = selAll('.map__dot')
 const mapBg$ = sel('.map__bg-img')
 const mapBgWrap$ = sel('.map__bg-wrap')
 
 const mapDotRemoveActiveClass = () => {
-  const activeDots = [...mapDots$].filter((el) => el.classList.contains(mapDotActive_))
+  const activeDots = [...mapDots$a].filter((el) => el.classList.contains(mapDotActive_))
   activeDots.forEach((el) => el.classList.remove(mapDotActive_))
 }
 const cardSpeed = 0.5
-const mapCardInAni = (i) => {
-  if (elementInViewport('.' + mapSec_)) {
-    // prevent overlapping tweens on fast scroll (end/home on keyboard)
-    gsap.timeline().to(mapCardsWrap$[i], { opacity: 1, top: '50%', duration: cardSpeed })
-    mapDots$[i].classList.add(mapDotActive_)
-  }
-}
-const mapCardOutAni = (i, scrollDirection = 'scrollingDown') => {
-  const direction = scrollDirection === 'scrollingUp' ? '55%' : '45%'
-  gsap.timeline().to(mapCardsWrap$[i], { opacity: 0, top: direction, duration: cardSpeed })
-  mapDotRemoveActiveClass()
-}
-mapDotRemoveActiveClass()
+let mapCardInAni
+let mapCardOutAni
 let mapScrollInitTl
 
 let mapScrollTl
-const featuresItem$ = selAll('.features-sec__item')
+const featuresItem$a = selAll('.features-sec__item')
 const featuresImg_ = 'features-sec__img'
 const featuresImgWrap_ = 'features-sec__img-wrap'
 const featuresInfo_ = 'features-sec__info'
 
 let introCardStAnimation, aboutStAnimation, mapStAnimation, mapInitStAnimation, featuresStAnimation, featuresScrollTl
 let introCardStTl
-// const introCardStTl = gsap.timeline({ defaults: { paused: true } }).to(introCard$, { transform: 'translate(0%, -80%)' })
 let aboutStTl
 let mapDotsObserver
-// introCardStAnimation = gsap.timeline({
-//   ScrollTrigger: {
-//     trigger: '.intro-sec',
-//     start: 'top bottom',
-//     end: 'bottom top',
-//     scrub: 1,
-//     markers: true,
-//   },
-// })
 const mm = gsap.matchMedia()
 mm.add('(min-width: 992px)', () => {
   console.log('adding sc')
+  if (mapSwiper) mapSwiper.destroy(true, true)
+  mapCardsWrapIn$.classList.remove('swiper')
+  mapCards$.classList.remove('swiper-wrapper')
+  mapCardWrap$a.forEach((el) => {
+    el.classList.remove('swiper-slide')
+  })
+  mapDotRemoveActiveClass()
+
+  mapCardInAni = (i) => {
+    if (elementInViewport('.' + mapSec_)) {
+      // prevent overlapping tweens on fast scroll (end/home on keyboard)
+      gsap.timeline().to(mapCardWrap$a[i], { opacity: 1, top: '50%', duration: cardSpeed })
+      mapDots$a[i].classList.add(mapDotActive_)
+    }
+  }
+  mapCardOutAni = (i, scrollDirection = 'scrollingDown') => {
+    const direction = scrollDirection === 'scrollingUp' ? '55%' : '45%'
+    gsap.timeline().to(mapCardWrap$a[i], { opacity: 0, top: direction, duration: cardSpeed })
+    mapDotRemoveActiveClass()
+  }
+
   mapScrollInitTl = gsap
     .timeline({ defaults: { ease: 'none', duration: 5 } })
     .to(mapFg$, { y: '-20vh' }, 0)
@@ -225,7 +234,7 @@ mm.add('(min-width: 992px)', () => {
     duration: { min: 0.2, max: 1 },
   })
 
-  mapCardsWrap$.forEach((el) => {
+  mapCardWrap$a.forEach((el) => {
     gsap.set(el, { opacity: 0, position: 'fixed', top: '55%', translateY: '-50%' })
   })
   mapInitStAnimation = ScrollTrigger.create({
@@ -243,17 +252,17 @@ mm.add('(min-width: 992px)', () => {
           if (mapStAnimation.isActive || mapInitStAnimation.isActive) {
             const mapFgScale = gsap.getProperty(mapFg$, 'scale')
             const mapFgWrapScale = gsap.getProperty(mapFgWrap$, 'scale')
-            const lineWidth = (mutation.target.getBoundingClientRect().left - mapCards$[0].getBoundingClientRect().right - 30) / (mapFgScale * mapFgWrapScale)
+            const lineWidth = (mutation.target.getBoundingClientRect().left - mapCard$a[0].getBoundingClientRect().right - 30) / (mapFgScale * mapFgWrapScale)
             mutation.target.querySelector('.' + mapDotLine_).style.width = lineWidth + 'px'
           }
         })
       }
     })
   })
-  for (let mapDot of mapDots$) {
+  for (let mapDot of mapDots$a) {
     mapDotsObserver.observe(mapDot, { attributes: true, attributeFilter: ['class'] })
   }
-  featuresItem$.forEach((item) => {
+  featuresItem$a.forEach((item) => {
     const img = item.querySelector('.' + featuresImg_)
     const imgWrap = item.querySelector('.' + featuresImgWrap_)
     const info = item.querySelector('.' + featuresInfo_)
@@ -270,60 +279,43 @@ mm.add('(min-width: 992px)', () => {
     })
   })
 })
-
-const screen = {
-  mob: 0,
-  mobLand: 479,
-  tab: 768,
-  desk: 992,
-  hd: 1440,
-  uhd: 1920,
-}
-let screenMq = {}
-Object.entries(screen).forEach(([scr, mq], i) => {
-  if (i === 0) {
-    // mobile
-    screenMq[scr] = window.matchMedia(`(max-width: ${Object.values(screen)[i + 1] - 1}px)`)
-  } else if (i === Object.keys(screen).length - 1) {
-    // uhd/4k
-    screenMq[scr] = window.matchMedia(`(min-width: ${mq}px)`)
-  } // the rest
-  else screenMq[scr] = window.matchMedia(`(min-width: ${mq}px) and (max-width: ${Object.values(screen)[i + 1]}px)`)
+mm.add('(max-width: 991px)', () => {
+  mapCardsWrapIn$.classList.add('swiper')
+  mapCards$.classList.add('swiper-wrapper')
+  mapCardWrap$a.forEach((el) => {
+    el.classList.add('swiper-slide')
+  })
+  mapSwiper = new Swiper('.map-sec__cards-wrapin', {
+    slidesPerView: 1,
+    slidesPerGroup: 1,
+    spaceBetween: 20,
+  })
+  mapSwiper.on('slideChange', () => {
+    mapDotRemoveActiveClass()
+    mapDots$a[mapSwiper.activeIndex].classList.add(mapDotActive_)
+  })
+  mapSwiper.slideNext()
+  mapDots$a.forEach((el, i) => {
+    el.style.cursor = 'pointer'
+    el.addEventListener('click', () => {
+      if (!el.classList.contains(mapDotActive_)) {
+        console.log('qwe')
+        mapDotRemoveActiveClass()
+        el.classList.add(mapDotActive_)
+        mapSwiper.slideTo(i)
+      }
+    })
+  })
 })
 
-// media query change events
-for (let [scr, mq] of Object.entries(screenMq)) {
-  mq.addEventListener('change', mqHandler)
-  // console.log('mq added:' + scr)
-}
-
-// media query handler function
-let mqNow = null
-let mqPrev
-function mqHandler() {
-  for (let [scr, mq] of Object.entries(screenMq)) {
-    if (mq.matches && mqNow !== scr) {
-      mqPrev = mqNow
-      mqNow = scr
-      // mqInit()
-    }
-  }
-  // console.log(mqNow)
-}
-mqHandler()
-
-function mqMax(device) {
-  const deviceIndex = Object.keys(screen).indexOf(device)
-  const mqNowIndex = Object.keys(screen).indexOf(mqNow)
-  if (mqNowIndex <= deviceIndex) return true
-  else return false
-}
-function mqMin(device) {
-  const deviceIndex = Object.keys(screen).indexOf(device)
-  const mqNowIndex = Object.keys(screen).indexOf(mqNow)
-  if (mqNowIndex >= deviceIndex) return true
-  else return false
-}
+// const mapSwiper = new Swiper('.map-sec__cards-wrap', {
+// spaceBetween: 20,
+// slidesPerView: 1,
+// direction: 'horizontal',
+// freeMode: true,
+// watchSlidesProgress: true,
+// modules: [Navigation, Pagination],
+// })
 
 function elementInViewport(el) {
   const element = el instanceof Element ? el : document.querySelector(el)
