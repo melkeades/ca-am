@@ -5,7 +5,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 import Flip from 'gsap/Flip'
 import Lenis from '@studio-freight/lenis'
 
-devMode(1)
+devMode(0)
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger, Flip)
 gsap.config({ force3D: true })
 const sel = (e) => document.querySelector(e)
