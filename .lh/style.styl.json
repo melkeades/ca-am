@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 52,
+            "activePatchIndex": 53,
             "patches": [
                 {
                     "date": 1690002223122,
@@ -216,6 +216,10 @@
                 {
                     "date": 1690407533746,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,51 @@\n+:root\n+  margin 0\n+  background #372d4e\n+\n+.approach-sec__topnav__item--active a\n+  color white !important\n+\n+.map__dot--active\n+  .map__dot__line\n+    opacity 1 !important\n+    width 1px\n+    transition-duration 0.1s\n+\n+.map__fg-img\n+  transform translateZ(0)\n+\n+@media screen and (min-width 992px)\n+  .map-sec__card::before, .features-sec__img-wrap::before\n+    position absolute\n+    content ''\n+    width calc(100% - 30px)\n+    height calc(100% - 30px)\n+    border-radius 16px\n+    top 60px\n+    left 60px\n+    z-index -1 !important\n+    border 3px solid #FFA756\n+\n+  .features-sec__img-wrap::before\n+    z-index 10 !important\n+\n+  .features-sec__item.is-reversed\n+    .features-sec__info\n+      margin-left auto !important\n+\n+    .features-sec__img-wrap\n+      margin-right 100px !important\n+\n+@media screen and (max-width 991px)\n+  .map-sec__cards-wrapin\n+    // height 360px !important\n+    width 400px !important\n+\n+  .map-sec__cards\n+    // display block\n+\n+  .map-sec__card-wrap\n+    // width 370px !important\n+\n+  .map__dot__line\n+    display none\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1690415509323,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,5 +47,9 @@\n   .map-sec__card-wrap\n     // width 370px !important\n \n   .map__dot__line\n-    display none\n\\ No newline at end of file\n+    display none\n+\n+@media screen and (max-width 478px)\n+  .map-sec__cards-wrapin\n+    width 100% !important\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1690002223121,
