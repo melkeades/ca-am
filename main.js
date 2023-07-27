@@ -142,6 +142,7 @@ function home() {
   let mapDotsObserver
 
   const aboutSwiper = new Swiper('.about-sec__slider', {
+    // disabled: true,
     slidesPerView: 1,
     slidesPerGroup: 1,
     spaceBetween: 20,
@@ -235,9 +236,12 @@ function home() {
       .addLabel('mapIntroDone', '>')
     introCardStTl = gsap.timeline().to(introCard$, { transform: 'translate(0%, -80%)' })
     aboutStTl = gsap
-      .timeline()
+      .timeline({ defaults: { duration: 3 } })
       .set('.card', { position: 'fixed' })
-      .to('.about-sec__item-wrap', { borderRadius: '0', top: '0', bottom: '0', left: '0', right: '0' }, '<')
+      .set('.about-sec__item-wrap', { clipPath: 'inset(80px round 40px)' })
+      .to('.about-sec__item-wrap', { clipPath: 'inset(0px round 0px)' }, '<')
+      .from('.about-sec__progress', { opacity: 0, duration: 2 }, 2)
+      // .to('.about-sec__item-wrap', { borderRadius: '0', top: '0', bottom: '0', left: '0', right: '0' }, '<')
       .set('.card', { position: 'absolute' })
     mapScrollTl = gsap
       .timeline({ defaults: { ease: 'none', duration: 5 } })
