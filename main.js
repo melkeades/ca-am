@@ -134,7 +134,7 @@ function home() {
   const featuresImg_ = 'features-sec__img'
   const featuresImgWrap_ = 'features-sec__img-wrap'
   const featuresInfo_ = 'features-sec__info'
-  const aboutProgressBar$ = sel('.progress-line__bar')
+  const aboutProgressBar$a = selAll('.progress-line__bar')
 
   let introCardStAnimation, aboutStAnimation, mapStAnimation, mapInitStAnimation, featuresStAnimation, featuresScrollTl
   let introCardStTl
@@ -147,6 +147,7 @@ function home() {
     spaceBetween: 20,
     modules: [Navigation, Autoplay, EffectFade],
     speed: 1000,
+    // rewind: true,
     fadeEffect: {
       crossFade: true,
     },
@@ -154,11 +155,29 @@ function home() {
     autoplay: {
       delay: 5000,
       disableOnInteraction: false,
+      stopOnLastSlide: true,
     },
     on: {
       autoplayTimeLeft(s, time, progress) {
-        aboutProgressBar$.style.setProperty('--about-progress', (1 - progress) * 100 + '%')
+        if (s.activeIndex < 2) {
+          const progIndex = s.activeIndex > 1 ? 1 : s.activeIndex
+          aboutProgressBar$a[progIndex].style.setProperty('--about-progress', (1 - progress) * 100 + '%')
+        }
         // progressContent.textContent = `${Math.ceil(time / 1000)}s`;
+      },
+      realIndexChange: (s) => {
+        selAll('.progress__title.is--active').forEach((el) => {
+          el.classList.remove('is--active')
+        })
+        selAll('.progress__title')[s.realIndex].classList.add('is--active')
+        const progress = selAll('.progress-line')
+        if (s.realIndex === 1) {
+          progress[0].classList.add('hide')
+          progress[1].classList.remove('hide')
+        } else if (s.realIndex === 0) {
+          progress[0].classList.remove('hide')
+          progress[1].classList.add('hide')
+        }
       },
     },
     navigation: {
@@ -169,6 +188,12 @@ function home() {
 
   mm.add('(min-width: 992px)', () => {
     console.log('adding sc')
+    selAll('.progress__title').forEach((el, i) => {
+      el.addEventListener('click', () => {
+        aboutSwiper.slideTo(i)
+      })
+    })
+
     if (mapSwiper) mapSwiper.destroy(true, true)
     mapCardsWrapIn$.classList.remove('swiper')
     mapCards$.classList.remove('swiper-wrapper')
@@ -361,6 +386,7 @@ function home() {
       slidesPerGroup: 1,
       spaceBetween: 20,
       modules: [Autoplay],
+      speed: 1000,
       autoplay: {
         delay: 5000,
         disableOnInteraction: false,
