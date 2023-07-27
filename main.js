@@ -19,7 +19,7 @@ const mapSec$ = sel('.map-sec')
 const featuresSec$ = sel('.features-sec')
 let mapSwiper
 
-devMode(0)
+devMode(1)
 function devMode(mode) {
   if (mode === 0) {
     return
