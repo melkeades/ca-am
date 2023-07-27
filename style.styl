@@ -16,6 +16,9 @@
   background #372d4e
   --orange #ffa756
 
+html
+  --blog-hero__img-outline-width calc(100% - 10px)
+
 .approach-sec__topnav__item--active a
   color white !important
 
@@ -36,7 +39,7 @@
     color var(--orange)
 
 @media screen and (min-width 992px)
-  .map-sec__card::before, .features-sec__img-wrap::before
+  .map-sec__card::before, .features-sec__img-wrap::before, .blog-hero__img-wrap::before
     position absolute
     content ''
     width calc(100% - 30px)
@@ -56,6 +59,9 @@
 
     .features-sec__img-wrap
       margin-right 100px !important
+
+  .blog-hero__img-wrap::before
+    width var(--blog-hero__img-outline-width)
 
 @media screen and (max-width 991px)
   .map-sec__cards-wrapin

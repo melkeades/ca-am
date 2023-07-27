@@ -8,15 +8,17 @@ import Swiper from 'swiper'
 import 'swiper/css'
 
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger, Flip)
+const mm = gsap.matchMedia()
+
 const sel = (e) => document.querySelector(e)
 const selAll = (e) => document.querySelectorAll(e)
+
 const lenis = new Lenis()
 function raf(time) {
   lenis.raf(time)
   requestAnimationFrame(raf)
 }
 requestAnimationFrame(raf)
-const pri = sel()
 
 switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'blog':
@@ -29,7 +31,31 @@ switch (sel('.page-wrapper').getAttribute('data-page')) {
     home()
 }
 function blog() {
-  console.log('blog')
+  mm.add('(min-width: 992px)', () => {
+    {
+      const heroImg = sel('.blog-hero__img')
+      const heroImgWrap = sel('.blog-hero__img-wrap')
+      const heroInfo = sel('.blog-hero__info')
+      const blogCard$a = selAll('.blog-card')
+      const blogItems = sel('.blog__items')
+
+      gsap
+        .timeline({ defaults: { ease: 'power4.out', duration: 3 } })
+        .from('html', { '--blog-hero__img-outline-width': 'calc(100% - 300px)', duration: 1 }, 0)
+        .fromTo(heroImgWrap, { width: '100%' }, { width: 520 }, '-=1.4')
+        .from(heroInfo, { opacity: 0, y: 100 }, 0)
+
+      if (document.documentElement.clientHeight / 2 < blogCard$a[0].getBoundingClientRect().top) {
+        ScrollTrigger.create({
+          animation: gsap
+            .timeline()
+            .from([blogCard$a[0], blogCard$a[1], blogCard$a[2]], { opacity: 0, y: 100, duration: 1, ease: 'power2.out', stagger: 0.15 }, 0),
+          trigger: blogItems,
+          start: 'top center',
+        })
+      }
+    }
+  })
 }
 function blogPost() {
   console.log('blog post')
@@ -111,7 +137,13 @@ function home() {
   let introCardStTl
   let aboutStTl
   let mapDotsObserver
-  const mm = gsap.matchMedia()
+
+  const aboutSwiper = new Swiper('.about-sec__slider', {
+    slidesPerView: 1,
+    slidesPerGroup: 1,
+    spaceBetween: 20,
+  })
+
   mm.add('(min-width: 992px)', () => {
     console.log('adding sc')
     if (mapSwiper) mapSwiper.destroy(true, true)
