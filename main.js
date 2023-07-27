@@ -234,7 +234,11 @@ function home() {
       )
       .addLabel('mapIntroDone', '>')
     introCardStTl = gsap.timeline().to(introCard$, { transform: 'translate(0%, -80%)' })
-    aboutStTl = gsap.timeline().to('.about-sec__item-wrap', { borderRadius: '0', top: '0', bottom: '0', left: '0', right: '0' }, '<')
+    aboutStTl = gsap
+      .timeline()
+      .set('.card', { position: 'fixed' })
+      .to('.about-sec__item-wrap', { borderRadius: '0', top: '0', bottom: '0', left: '0', right: '0' }, '<')
+      .set('.card', { position: 'absolute' })
     mapScrollTl = gsap
       .timeline({ defaults: { ease: 'none', duration: 5 } })
       .addLabel('card-a')
