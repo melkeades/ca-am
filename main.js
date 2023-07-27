@@ -5,7 +5,9 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 import Flip from 'gsap/Flip'
 import Lenis from '@studio-freight/lenis'
 import Swiper from 'swiper'
+import { Navigation, Autoplay, EffectFade } from 'swiper/modules'
 import 'swiper/css'
+import 'swiper/css/effect-fade'
 
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger, Flip)
 const mm = gsap.matchMedia()
@@ -132,6 +134,7 @@ function home() {
   const featuresImg_ = 'features-sec__img'
   const featuresImgWrap_ = 'features-sec__img-wrap'
   const featuresInfo_ = 'features-sec__info'
+  const aboutProgressBar$ = sel('.progress-line__bar')
 
   let introCardStAnimation, aboutStAnimation, mapStAnimation, mapInitStAnimation, featuresStAnimation, featuresScrollTl
   let introCardStTl
@@ -142,6 +145,26 @@ function home() {
     slidesPerView: 1,
     slidesPerGroup: 1,
     spaceBetween: 20,
+    modules: [Navigation, Autoplay, EffectFade],
+    speed: 1000,
+    fadeEffect: {
+      crossFade: true,
+    },
+    effect: 'fade',
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
+    on: {
+      autoplayTimeLeft(s, time, progress) {
+        aboutProgressBar$.style.setProperty('--about-progress', (1 - progress) * 100 + '%')
+        // progressContent.textContent = `${Math.ceil(time / 1000)}s`;
+      },
+    },
+    navigation: {
+      nextEl: '.arrow-right',
+      prevEl: '.arrow-left',
+    },
   })
 
   mm.add('(min-width: 992px)', () => {
@@ -337,6 +360,11 @@ function home() {
       slidesPerView: 1,
       slidesPerGroup: 1,
       spaceBetween: 20,
+      modules: [Autoplay],
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
     })
     mapSwiper.on('slideChange', () => {
       mapDotRemoveActiveClass()

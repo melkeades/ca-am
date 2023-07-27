@@ -18,6 +18,10 @@
 
 html
   --blog-hero__img-outline-width calc(100% - 10px)
+  --about-progress 10%
+
+.progress-line__bar
+  width var(--about-progress)
 
 .approach-sec__topnav__item--active a
   color white !important
@@ -80,3 +84,6 @@ html
 @media screen and (max-width 478px)
   .map-sec__cards-wrapin
     width 100% !important
+
+  .about-sec__slider
+    overflow visible !important
