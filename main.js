@@ -8,6 +8,8 @@ import Swiper from 'swiper'
 import { Navigation, Autoplay, EffectFade } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
+// import { Application, Assets, Sprite } from 'pixi.js'
+import * as PIXI from 'pixi.js'
 
 gsap.registerPlugin(CSSRulePlugin, ScrollTrigger, Flip)
 const mm = gsap.matchMedia()
@@ -23,6 +25,9 @@ function raf(time) {
 requestAnimationFrame(raf)
 
 switch (sel('.page-wrapper').getAttribute('data-page')) {
+  case 'canvas':
+    canvas()
+    break
   case 'blog':
     blog()
     break
@@ -31,6 +36,219 @@ switch (sel('.page-wrapper').getAttribute('data-page')) {
     break
   default:
     home()
+}
+function canvas() {
+  console.log('canvas')
+
+  const mapCard$a = selAll('.map-sec__card')
+  const mapCardWrapIn$a = selAll('.map-sec__card-wrapin')
+  const mapCardWrap$a = selAll('.map-sec__card-wrap')
+
+  const mapSec_ = 'map-sec'
+  const mapDotActive_ = 'canvas__map__dot--active'
+  const mapDotLine_ = 'canvas__map__dot__line'
+
+  const map$ = sel('.canvas__map')
+  const mapSec$ = sel(mapSec_)
+  const mapWrap$ = sel('.canvas__map-wrap')
+  const mapWrapIn$ = sel('.canvas__map-wrapin')
+  const mapFg$ = sel('.canvas__map__fg')
+  const mapFgWrap$ = sel('.canvas__map__fg-wrap')
+  const mapDot$a = selAll('.canvas__map__dot')
+  const mapBg$ = sel('.canvas__map__bg-img')
+  const mapBgWrap$ = sel('.canvas__map__bg-wrap')
+
+  const app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio })
+  sel('.canvas-wrap').appendChild(app.view)
+  // sel('canvas').style.width = '100%'
+  // sel('canvas').style.zIndex = '200'
+  const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64b6dd100f52c5e9565e1b0c_map-woDots-pos.svg'
+  const webp = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c32bc38561c58fd42315e3_map-woDots-pos1-01.webp'
+  // const texture = await Assets.load('https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64b6dd100f52c5e9565e1b0c_map-woDots-pos.svg')
+  // const sprite = PIXI.Sprite.from('https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c32bc38561c58fd42315e3_map-woDots-pos1-01.webp')
+  // const sprite = PIXI.Sprite.from('https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64b6dd100f52c5e9565e1b0c_map-woDots-pos.svg')
+
+  // var tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1.3 } })
+  // var sprite = new PIXI.Sprite(tex)
+
+  PIXI.Assets.add('char', svg, {
+    metadata: {
+      resolution: 2,
+      resourceOptions: {
+        scale: 2,
+      },
+    },
+  })
+  const prom = PIXI.Assets.load(['char'])
+  prom.then(() => {
+    const sprite = new PIXI.Sprite.from(PIXI.utils.TextureCache.char)
+    sprite.anchor.x = 0.5
+    sprite.anchor.y = 0.5
+    app.stage.addChild(sprite)
+    sprite.x = app.screen.width / 2
+    sprite.y = app.screen.height / 2
+  })
+  // sprite.x = 0
+  // sprite.y = 0
+  // sprite.scale.x = 0.6
+  // sprite.scale.y = 0.6
+  // sprite.scale.x = 10
+  // sprite.scale.y = 10
+  // app.stage.addChild(sprite)
+
+  let elapsed = 0.0
+  app.ticker.add((delta) => {
+    elapsed += delta
+    sprite.x = 100.0 + Math.cos(elapsed / 50.0) * 100.0
+  })
+
+  const mapDotRemoveActiveClass = () => {
+    const activeDots = [...mapDot$a].filter((el) => el.classList.contains(mapDotActive_))
+    activeDots.forEach((el) => el.classList.remove(mapDotActive_))
+  }
+  const cardSpeed = 0.5
+  let mapCardInAni
+  let mapCardOutAni
+  let mapScrollInitTl
+  mapDotRemoveActiveClass()
+
+  mapScrollInitTl = gsap
+    .timeline({ defaults: { ease: 'none', duration: 5 } })
+    .to(mapFg$, { y: '-20vh' }, 0)
+    .to(mapBg$, { y: '-10vh' }, 0)
+    .to(mapFg$, { scale: 1.2 }, 0)
+    .to(mapBg$, { scale: 1.2 * 0.84 }, 0)
+    .to(
+      {},
+      {
+        onComplete: mapCardInAni,
+        onCompleteParams: [0],
+        onReverseComplete: mapCardOutAni,
+        onReverseCompleteParams: [0, 'scrollingUp'],
+        duration: 0.001,
+      },
+      3.5
+    )
+    .addLabel('mapIntroDone', '>')
+  mapCardInAni = (i) => {
+    if (elementInViewport('.' + mapSec_)) {
+      // prevent overlapping tweens on fast scroll (end/home on keyboard)
+      gsap.timeline().to(mapCardWrap$a[i], { opacity: 1, top: '50%', duration: cardSpeed })
+      mapDot$a[i].classList.add(mapDotActive_)
+    }
+  }
+  mapCardOutAni = (i, scrollDirection = 'scrollingDown') => {
+    const direction = scrollDirection === 'scrollingUp' ? '55%' : '45%'
+    gsap.timeline().to(mapCardWrap$a[i], { opacity: 0, top: direction, duration: cardSpeed })
+    mapDotRemoveActiveClass()
+  }
+  const mapScrollTl = gsap
+    .timeline({ defaults: { ease: 'none', duration: 5 } })
+    .addLabel('card-a')
+    .to(mapFgWrap$, { y: '-60vh' }, 0)
+    .to(mapBgWrap$, { y: -60 * 0.8 + 'vh' }, 0)
+    .to(
+      {},
+      {
+        onComplete: mapCardOutAni,
+        onCompleteParams: [0],
+        onReverseComplete: mapCardInAni,
+        onReverseCompleteParams: [0],
+        duration: 0.001,
+      },
+      2.5 // DO NOT OVERLAP EVENT TWEENS!!!
+    )
+    .addLabel('card-b', 5)
+    .to(
+      {},
+      {
+        onComplete: mapCardInAni,
+        onCompleteParams: [1],
+        onReverseComplete: mapCardOutAni,
+        onReverseCompleteParams: [1, 'scrollingUp'],
+        duration: 0.001,
+      },
+      3.5
+    )
+    .set([mapFgWrap$, mapBgWrap$], { transformOrigin: '100% 60%' })
+    .to(mapFgWrap$, { scale: 1.9 }, 5)
+    .to(mapBgWrap$, { scale: 1.9 * 0.8 }, 5)
+    .to(
+      {},
+      {
+        onComplete: mapCardOutAni,
+        onCompleteParams: [1],
+        onReverseComplete: mapCardInAni,
+        onReverseCompleteParams: [1],
+        duration: 0.001,
+      },
+      7.5
+    )
+    .addLabel('card-c', 10)
+    .to(
+      {},
+      {
+        onComplete: mapCardInAni,
+        onCompleteParams: [2],
+        onReverseComplete: mapCardOutAni,
+        onReverseCompleteParams: [2, 'scrollingUp'],
+        duration: 0.001,
+      },
+      8.5
+    )
+    .to(mapFgWrap$, { y: '-85vh' }, 10)
+    .to(mapBgWrap$, { y: -85 * 0.8 + 'vh' }, 10)
+    .to(
+      {},
+      {
+        onComplete: mapCardOutAni,
+        onCompleteParams: [2],
+        onReverseComplete: mapCardInAni,
+        onReverseCompleteParams: [2],
+        duration: 0.001,
+      },
+      14
+    )
+    .addLabel('finish', 15)
+  const mapStAnimation = ScrollTrigger.create({
+    animation: mapScrollTl,
+    trigger: mapSec$,
+    start: 'top top',
+    end: 'bottom+=1000 top',
+    pin: mapWrap$,
+    scrub: 1,
+    snap: 'labelsDirectional',
+    duration: { min: 0.2, max: 1 },
+  })
+
+  mapCardWrap$a.forEach((el) => {
+    gsap.set(el, { opacity: 0, position: 'fixed', top: '55%', translateY: '-50%' })
+  })
+  const mapInitStAnimation = ScrollTrigger.create({
+    animation: mapScrollInitTl,
+    trigger: mapSec$,
+    start: 'top 80%',
+    end: 'top top',
+    scrub: 1,
+    snap: 1,
+  })
+  const mapDotsObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.target.classList.contains(mapDotActive_)) {
+        window.addEventListener('scroll', () => {
+          if (mapStAnimation.isActive || mapInitStAnimation.isActive) {
+            const mapFgScale = gsap.getProperty(mapFg$, 'scale')
+            const mapFgWrapScale = gsap.getProperty(mapFgWrap$, 'scale')
+            const lineWidth = (mutation.target.getBoundingClientRect().left - mapCard$a[0].getBoundingClientRect().right - 30) / (mapFgScale * mapFgWrapScale)
+            mutation.target.querySelector('.' + mapDotLine_).style.width = lineWidth + 'px'
+          }
+        })
+      }
+    })
+  })
+  for (let mapDot of mapDot$a) {
+    // mapDotsObserver.observe(mapDot, { attributes: true, attributeFilter: ['class'] })
+  }
 }
 function blog() {
   mm.add('(min-width: 992px)', () => {
@@ -240,7 +458,7 @@ function home() {
       // .set('.card', { position: 'fixed' })
       .set('.about-sec__item-wrap', { clipPath: 'inset(80px round 40px)' })
       .to('.about-sec__item-wrap', { clipPath: 'inset(0px round 0px)' }, '<')
-      .to('.about-sec__slide__bg', { scale: 1.08 }, '<')
+      .to('.about-sec__slide__bg', { scale: 1.06 }, '<')
       // .from('.card', { y: 50, opacity: 0, duration: 1.2 }, 0)
       .from('.about-sec__progress', { opacity: 0, duration: 2 }, 1)
     // .to('.about-sec__item-wrap', { borderRadius: '0', top: '0', bottom: '0', left: '0', right: '0' }, '<')
