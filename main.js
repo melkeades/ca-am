@@ -240,6 +240,7 @@ function home() {
       .set('.card', { position: 'fixed' })
       .set('.about-sec__item-wrap', { clipPath: 'inset(80px round 40px)' })
       .to('.about-sec__item-wrap', { clipPath: 'inset(0px round 0px)' }, '<')
+      .to('.about-sec__slide__bg', { scale: 1.05 }, '<')
       .from('.about-sec__progress', { opacity: 0, duration: 2 }, 2)
       // .to('.about-sec__item-wrap', { borderRadius: '0', top: '0', bottom: '0', left: '0', right: '0' }, '<')
       .set('.card', { position: 'absolute' })
