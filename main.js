@@ -63,29 +63,36 @@ function canvas() {
 
   const app = new PIXI.Application({ width: vpWidth, height: vpHight, resolution: window.devicePixelRatio || 1, antialias: true })
   sel('.canvas-wrap').appendChild(app.view)
+  const renderer = new PIXI.Renderer({
+    resolution: window.devicePixelRatio,
+    autoDensity: true,
+  })
   const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c4afa6434d9807c6f188a7_map-woDots-pos2.svg'
 
-  var tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1.5 } })
-  var tex = PIXI.Texture.from(svg)
-  var sprite = new PIXI.Sprite(tex)
-  sprite.scale.x = 0.1
-  sprite.scale.y = 0.1
-  sprite.anchor.x = 1
-  sprite.anchor.y = 0
-  sprite.x = vpWidth
-  sprite.y = 0
-  app.stage.addChild(sprite)
+  const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1.5 } })
+  const sprite = new PIXI.Sprite(tex)
+  const cont = new PIXI.Container()
+  cont.pivot.set(1, 0)
+  app.stage.addChild(cont)
+  sprite.scale.set(0.1, 0.1)
+  sprite.anchor.set(1, 0)
+  sprite.position.set(vpWidth, 0)
+  cont.addChild(sprite)
 
   app.ticker.stop()
   gsap.ticker.add(() => {
     app.ticker.update()
   })
   ScrollTrigger.create({
-    animation: gsap.timeline().to(sprite.scale, { x: 5, y: 5 }),
+    animation: gsap
+      .timeline({ defaults: { ease: 'none' } })
+      .to(sprite.scale, { x: 2, y: 2 }, 0)
+      .to(sprite, { y: -2000 }, 0)
+      .to(cont, { x: -2000 }),
     pin: true,
     trigger: '.canvas-wrap',
     start: 'top top',
-    end: 'bottom+=5000 top',
+    end: 'bottom+=1000 top',
     scrub: 1,
   })
   const mapDotRemoveActiveClass = () => {
