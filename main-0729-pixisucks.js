@@ -58,36 +58,56 @@ function canvas() {
   const mapBg$ = sel('.canvas__map__bg-img')
   const mapBgWrap$ = sel('.canvas__map__bg-wrap')
 
-  const vpWidth = document.documentElement.clientWidth
-  const vpHight = document.documentElement.clientHeight
-
-  const app = new PIXI.Application({ width: vpWidth, height: vpHight, resolution: window.devicePixelRatio || 1, antialias: true })
+  const app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight, resolution: window.devicePixelRatio })
   sel('.canvas-wrap').appendChild(app.view)
-  const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c4afa6434d9807c6f188a7_map-woDots-pos2.svg'
+  // sel('canvas').style.width = '100%'
+  // sel('canvas').style.zIndex = '200'
+  const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64b6dd100f52c5e9565e1b0c_map-woDots-pos.svg'
+  const webp = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c32bc38561c58fd42315e3_map-woDots-pos1-01.webp'
+  // const texture = await Assets.load('https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64b6dd100f52c5e9565e1b0c_map-woDots-pos.svg')
+  // const sprite = PIXI.Sprite.from('https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c32bc38561c58fd42315e3_map-woDots-pos1-01.webp')
+  // const sprite = PIXI.Sprite.from('https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64b6dd100f52c5e9565e1b0c_map-woDots-pos.svg')
 
-  var tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1.5 } })
-  var tex = PIXI.Texture.from(svg)
-  var sprite = new PIXI.Sprite(tex)
-  sprite.scale.x = 0.1
-  sprite.scale.y = 0.1
-  sprite.anchor.x = 1
-  sprite.anchor.y = 0
-  sprite.x = vpWidth
-  sprite.y = 0
-  app.stage.addChild(sprite)
+  // var tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1.3 } })
+  // var sprite = new PIXI.Sprite(tex)
 
-  app.ticker.stop()
-  gsap.ticker.add(() => {
-    app.ticker.update()
+  // const pi = new PIXI.SVGResource(svg, { scale: 1.2 })
+  // var tex = PIXI.Texture.from(pi)
+  // var sp = new PIXI.Sprite(tex)
+  // app.stage.addChild(sp)
+  PIXI.Assets.add('char', svg, {
+    resourceOptions: {
+      width: 200,
+      height: 200,
+      // resolution: 9,
+    },
   })
-  ScrollTrigger.create({
-    animation: gsap.timeline().to(sprite.scale, { x: 5, y: 5 }),
-    pin: true,
-    trigger: '.canvas-wrap',
-    start: 'top top',
-    end: 'bottom+=5000 top',
-    scrub: 1,
+  const prom = PIXI.Assets.load('char')
+  // PIXI.utils.TextureCache.
+  prom.then(() => {
+    // const sprite = PIXI.Sprite.from('char')
+    const sprite = PIXI.Sprite.from(PIXI.utils.TextureCache.char)
+    sprite.anchor.x = 0.5
+    sprite.anchor.y = 0.5
+    app.stage.addChild(sprite)
+    sprite.x = app.screen.width / 2
+    sprite.y = app.screen.height / 2
+    // sprite.scale.x = 10
+    // sprite.scale.y = 10
   })
+  // sprite.x = 0
+  // sprite.y = 0
+  // sprite.scale.x = 0.6
+  // sprite.scale.y = 0.6
+  // app.stage.addChild(sprite)
+  //
+  PIXI
+  let elapsed = 0.0
+  app.ticker.add((delta) => {
+    elapsed += delta
+    // svgSprite.x = 100.0 + Math.cos(elapsed / 50.0) * 100.0
+  })
+
   const mapDotRemoveActiveClass = () => {
     const activeDots = [...mapDot$a].filter((el) => el.classList.contains(mapDotActive_))
     activeDots.forEach((el) => el.classList.remove(mapDotActive_))
