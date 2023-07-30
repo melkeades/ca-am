@@ -68,7 +68,7 @@ function canvas() {
     autoDensity: true,
     antialias: true,
   })
-  app.stage.eventMode = 'none'
+  // app.stage.eventMode = 'none'
   // cont.eventMode = 'auto'
   canvasWrap$.appendChild(app.view)
 
