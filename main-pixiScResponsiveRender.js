@@ -58,9 +58,13 @@ function canvas() {
   const mapBg$ = sel('.canvas__map__bg-img')
   const mapBgWrap$ = sel('.canvas__map__bg-wrap')
 
+  // const vpWidth = document.documentElement.clientWidth
+  // const vpHight = document.documentElement.clientHeight
   const canvasWrap$ = sel('.canvas-wrap')
   let canvasWrapWidth = canvasWrap$.clientWidth
   let canvasWrapHeight = canvasWrap$.clientHeight
+  canvasWrap$.appendChild(document.createElement('canvas'))
+  //   const canvas$ = sel('canvas')
   const app = new PIXI.Application({
     width: canvasWrapWidth,
     height: canvasWrapHeight,
@@ -69,7 +73,17 @@ function canvas() {
     antialias: true,
   })
   canvasWrap$.appendChild(app.view)
-
+  // const app = new PIXI.Application({ width: canvasWrapWidth, height: canvasWrapHeight, resolution: 1, antialias: true })
+  // const app = new PIXI.Application({ width: vpWidth, height: vpHight, resolution: 1, antialias: true })
+  //   const renderer = new PIXI.Renderer({
+  //     width: canvasWrapWidth,
+  //     height: canvasWrapHeight,
+  //     resolution: window.devicePixelRatio,
+  //     autoDensity: true,
+  //     antialias: true,
+  //     view: canvas$,
+  //   })
+  //   const stage = new PIXI.Container()
   const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c4afa6434d9807c6f188a7_map-woDots-pos2.svg'
   const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 2 } })
   const sprite = new PIXI.Sprite(tex)
@@ -81,10 +95,14 @@ function canvas() {
   sprite.position.set(canvasWrapWidth, 0)
   cont.addChild(sprite)
 
+  // const ticker = new PIXI.Ticker()
+  // ticker.stop()
   app.ticker.stop()
   gsap.ticker.add(() => {
-    // sprite.position.set(canvasWrapWidth, 0)
+    // ticker.update()
+    sprite.position.set(canvasWrapWidth, 0)
     app.ticker.update()
+    // renderer.render(stage)
   })
   let canvasSc = null
   const canvasScInit = () => {
@@ -92,8 +110,8 @@ function canvas() {
       animation: gsap
         .timeline({ defaults: { ease: 'none' } })
         .to(sprite.scale, { x: 2, y: 2 }, 0)
-        .to(sprite, { y: -3000 }, 0)
-        .to(cont, { x: 1000 }),
+        .to(sprite, { y: -2000 }, 0)
+        .to(cont, { x: -2000 }),
       pin: true,
       trigger: '.canvas-wrap',
       start: 'top top',
@@ -105,12 +123,22 @@ function canvas() {
   window.addEventListener(
     'resize',
     debounce(() => {
-      canvasSc.kill()
       canvasWrapWidth = canvasWrap$.clientWidth
       canvasWrapHeight = canvasWrap$.clientHeight
-      app.renderer.resize(canvasWrapWidth, canvasWrapHeight)
-      sprite.position.set(canvasWrapWidth, 0)
-      canvasScInit()
+      // canvasWrapWidth = renderer.view.parentNode.clientWidth
+      // canvasWrapHeight = renderer.view.parentNode.clientHeight
+      // app.renderer.resize(canvasWrapWidth, canvasWrapHeight)
+      // console.log('qwe')
+
+      // app.ticker.update()
+      // app.render()
+      renderer.resize(canvasWrapWidth, canvasWrapHeight)
+      if (canvasSc != null)
+        canvasSc.kill(() => {
+          canvasScInit()
+        })
+      // canvas$.style.width = canvasWrapWidth
+      // renderer.render(stage)
     })
   )
   const mapDotRemoveActiveClass = () => {
