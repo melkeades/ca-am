@@ -58,43 +58,85 @@ function canvas() {
   const mapBg$ = sel('.canvas__map__bg-img')
   const mapBgWrap$ = sel('.canvas__map__bg-wrap')
 
-  const vpWidth = document.documentElement.clientWidth
-  const vpHight = document.documentElement.clientHeight
-
-  const app = new PIXI.Application({ width: vpWidth, height: vpHight, resolution: window.devicePixelRatio || 1, antialias: true })
-  sel('.canvas-wrap').appendChild(app.view)
+  // const vpWidth = document.documentElement.clientWidth
+  // const vpHight = document.documentElement.clientHeight
+  const canvasWrap$ = sel('.canvas-wrap')
+  let canvasWrapWidth = canvasWrap$.clientWidth
+  let canvasWrapHeight = canvasWrap$.clientHeight
+  canvasWrap$.appendChild(document.createElement('canvas'))
+  const canvas$ = sel('canvas')
+  // const app = new PIXI.Application({
+  //   width: canvasWrapWidth,
+  //   height: canvasWrapHeight,
+  //   resolution: window.devicePixelRatio,
+  //   autoDensity: true,
+  //   antialias: true,
+  // })
+  // const app = new PIXI.Application({ width: canvasWrapWidth, height: canvasWrapHeight, resolution: 1, antialias: true })
+  // const app = new PIXI.Application({ width: vpWidth, height: vpHight, resolution: 1, antialias: true })
+  // canvasWrap$.appendChild(app.view)
   const renderer = new PIXI.Renderer({
+    width: canvasWrapWidth,
+    height: canvasWrapHeight,
     resolution: window.devicePixelRatio,
     autoDensity: true,
+    antialias: true,
+    view: canvas$,
   })
+  const stage = new PIXI.Container()
   const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c4afa6434d9807c6f188a7_map-woDots-pos2.svg'
-
-  const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1.5 } })
+  const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 2 } })
   const sprite = new PIXI.Sprite(tex)
   const cont = new PIXI.Container()
   cont.pivot.set(1, 0)
-  app.stage.addChild(cont)
-  sprite.scale.set(0.1, 0.1)
+  stage.addChild(cont)
+  sprite.scale.set(0.1)
   sprite.anchor.set(1, 0)
-  sprite.position.set(vpWidth, 0)
+  sprite.position.set(canvasWrapWidth, 0)
   cont.addChild(sprite)
 
-  app.ticker.stop()
+  // const ticker = new PIXI.Ticker()
+  // ticker.stop()
   gsap.ticker.add(() => {
-    app.ticker.update()
+    // ticker.update()
+    sprite.position.set(canvasWrapWidth, 0)
+    renderer.render(stage)
   })
-  ScrollTrigger.create({
-    animation: gsap
-      .timeline({ defaults: { ease: 'none' } })
-      .to(sprite.scale, { x: 2, y: 2 }, 0)
-      .to(sprite, { y: -2000 }, 0)
-      .to(cont, { x: -2000 }),
-    pin: true,
-    trigger: '.canvas-wrap',
-    start: 'top top',
-    end: 'bottom+=1000 top',
-    scrub: 1,
-  })
+  let canvasSc = null
+  const canvasScInit = () => {
+    canvasSc = ScrollTrigger.create({
+      animation: gsap
+        .timeline({ defaults: { ease: 'none' } })
+        .to(sprite.scale, { x: 2, y: 2 }, 0)
+        .to(sprite, { y: -2000 }, 0)
+        .to(cont, { x: -2000 }),
+      pin: true,
+      trigger: '.canvas-wrap',
+      start: 'top top',
+      end: 'bottom+=1000 top',
+      scrub: 1,
+    })
+  }
+  canvasScInit()
+  window.addEventListener(
+    'resize',
+    debounce(() => {
+      canvasWrapWidth = canvasWrap$.clientWidth
+      canvasWrapHeight = canvasWrap$.clientHeight
+      // canvasWrapWidth = renderer.view.parentNode.clientWidth
+      // canvasWrapHeight = renderer.view.parentNode.clientHeight
+      // app.renderer.resize(canvasWrapWidth, canvasWrapHeight)
+      // console.log('qwe')
+
+      // app.ticker.update()
+      // app.render()
+      if (canvasSc != null) canvasSc.kill()
+      canvas$.style.width = canvasWrapWidth
+      renderer.resize(canvasWrapWidth, canvasWrapHeight)
+      canvasScInit()
+      // renderer.render(stage)
+    })
+  )
   const mapDotRemoveActiveClass = () => {
     const activeDots = [...mapDot$a].filter((el) => el.classList.contains(mapDotActive_))
     activeDots.forEach((el) => el.classList.remove(mapDotActive_))
@@ -646,5 +688,13 @@ function elementInViewport(el) {
     return true
   } else {
     return false
+  }
+}
+// Debounce
+function debounce(func, time = 100) {
+  let timer
+  return function (event) {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(func, time, event)
   }
 }
