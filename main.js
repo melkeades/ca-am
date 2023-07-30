@@ -67,7 +67,6 @@ function canvas() {
     resolution: window.devicePixelRatio,
     autoDensity: true,
     antialias: true,
-    eventMode: 'none',
   })
   canvasWrap$.appendChild(app.view)
 
@@ -85,9 +84,6 @@ function canvas() {
   sprite.anchor.set(1, 0)
   sprite.position.set(canvasWrapWidth, 0)
   cont.addChild(sprite)
-
-  // app.renderer.view.style.touchAction = 'auto'
-  // PIXI.EventSystem.defaultEventMode = 'auto'
 
   app.ticker.stop()
   gsap.ticker.add(() => {
