@@ -71,7 +71,8 @@ function canvas() {
   canvasWrap$.appendChild(app.view)
 
   // const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c4afa6434d9807c6f188a7_map-woDots-pos2.svg'
-  const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c5e28cf22c3195f7e614c7_map-woDots-pos9000-01.svg'
+  // const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c5e28cf22c3195f7e614c7_map-woDots-pos9000-01.svg'
+  const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c5e3610bcb95fd6720e36d_map-woDots-pos9000-01.webp'
   const tex = PIXI.Texture.from(svg)
   // const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 3 } })
   const sprite = new PIXI.Sprite(tex)
