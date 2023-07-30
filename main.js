@@ -67,7 +67,7 @@ function canvas() {
     resolution: window.devicePixelRatio,
     autoDensity: true,
     antialias: true,
-    eventMode: 'auto',
+    eventMode: 'none',
   })
   canvasWrap$.appendChild(app.view)
 
