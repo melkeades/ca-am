@@ -68,6 +68,8 @@ function canvas() {
     autoDensity: true,
     antialias: true,
   })
+  app.stage.eventMode = 'auto'
+  cont.eventMode = 'auto'
   canvasWrap$.appendChild(app.view)
 
   // const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c4afa6434d9807c6f188a7_map-woDots-pos2.svg'
@@ -85,7 +87,8 @@ function canvas() {
   sprite.position.set(canvasWrapWidth, 0)
   cont.addChild(sprite)
 
-  app.renderer.view.style.touchAction = 'auto'
+  // app.renderer.plugins.inter
+  // PIXI.app.renderer.view.style.touchAction = 'auto'
 
   app.ticker.stop()
   gsap.ticker.add(() => {
