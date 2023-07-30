@@ -71,7 +71,8 @@ function canvas() {
   canvasWrap$.appendChild(app.view)
 
   const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c4afa6434d9807c6f188a7_map-woDots-pos2.svg'
-  const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1 } })
+  const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1.1 } })
+  // const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1 } })
   const sprite = new PIXI.Sprite(tex)
   const cont = new PIXI.Container()
   cont.pivot.set(1, 0)
