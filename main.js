@@ -105,18 +105,18 @@ function canvas() {
       scrub: 1,
     })
   }
-  canvasScInit()
-  window.addEventListener(
-    'resize',
-    debounce(() => {
-      canvasSc.kill()
-      canvasWrapWidth = canvasWrap$.clientWidth
-      canvasWrapHeight = canvasWrap$.clientHeight
-      app.renderer.resize(canvasWrapWidth, canvasWrapHeight)
-      sprite.position.set(canvasWrapWidth, 0)
-      canvasScInit()
-    })
-  )
+  // canvasScInit()
+  // window.addEventListener(
+  //   'resize',
+  //   debounce(() => {
+  //     canvasSc.kill()
+  //     canvasWrapWidth = canvasWrap$.clientWidth
+  //     canvasWrapHeight = canvasWrap$.clientHeight
+  //     app.renderer.resize(canvasWrapWidth, canvasWrapHeight)
+  //     sprite.position.set(canvasWrapWidth, 0)
+  //     canvasScInit()
+  //   })
+  // )
   const mapDotRemoveActiveClass = () => {
     const activeDots = [...mapDot$a].filter((el) => el.classList.contains(mapDotActive_))
     activeDots.forEach((el) => el.classList.remove(mapDotActive_))
