@@ -71,7 +71,7 @@ function canvas() {
   canvasWrap$.appendChild(app.view)
 
   const svg = 'https://uploads-ssl.webflow.com/64b5d89ecbb311f07e71739b/64c4afa6434d9807c6f188a7_map-woDots-pos2.svg'
-  const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 2 } })
+  const tex = PIXI.Texture.from(svg, { resourceOptions: { scale: 1 } })
   const sprite = new PIXI.Sprite(tex)
   const cont = new PIXI.Container()
   cont.pivot.set(1, 0)
@@ -91,8 +91,8 @@ function canvas() {
     canvasSc = ScrollTrigger.create({
       animation: gsap
         .timeline({ defaults: { ease: 'none' } })
-        .to(sprite.scale, { x: 2, y: 2 }, 0)
-        .to(sprite, { y: -3000 }, 0)
+        .to(sprite.scale, { x: 1, y: 1 }, 0)
+        .to(sprite, { y: -5400 }, 0)
         .to(cont, { x: 1000 }),
       pin: true,
       trigger: '.canvas-wrap',
