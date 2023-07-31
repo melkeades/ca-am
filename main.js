@@ -23,8 +23,8 @@ function raf(time) {
 }
 requestAnimationFrame(raf)
 
-const navLinkActive$ = selAll('.navbar__container>.btn')[0]
-const primColor = getComputedStyle(navLinkActive$).getPropertyValue('background-color')
+const globalStylesEmbed$ = sel('.global-styles')
+const primColor = getComputedStyle(globalStylesEmbed$).getPropertyValue('color')
 document.querySelector(':root').style.setProperty('--primary-color', primColor, 'important')
 
 switch (sel('.page-wrapper').getAttribute('data-page')) {
