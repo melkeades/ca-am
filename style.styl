@@ -14,7 +14,7 @@
 :root
   margin 0
   background #372d4e
-  --orange #ffa756
+  --primary-color #ffa756
 
 html
   --blog-hero__img-outline-width calc(100% - 10px)
@@ -40,7 +40,7 @@ html
   transition-duration 0.3s
 
   &:hover
-    color var(--orange)
+    color var(--primary-color)
 
 @media screen and (min-width 992px)
   .map-sec__card::before, .features-sec__img-wrap::before, .blog-hero__img-wrap::before
@@ -52,7 +52,7 @@ html
     top 60px
     left 60px
     z-index -1 !important
-    border 3px solid #FFA756
+    border 3px solid var(--primary-color)
 
   .features-sec__img-wrap::before
     z-index 10 !important
@@ -87,3 +87,21 @@ html
 
   .about-sec__slider
     overflow visible !important
+
+.intro-sec__video iframe
+  position absolute
+  top 0
+  left 0
+  width 100%
+  height 100%
+  pointer-events none
+
+@media (max-aspect-ratio 16 / 9)
+  .intro-sec__video iframe
+    height 300%
+    top -100%
+
+@media (min-aspect-ratio 16 / 9)
+  .intro-sec__video iframe
+    width 300%
+    left -100%

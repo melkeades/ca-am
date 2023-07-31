@@ -1,5 +1,6 @@
 import './style.styl'
 import gsap from 'gsap'
+import CSSRulePlugin from 'gsap/CSSRulePlugin'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import Flip from 'gsap/Flip'
 import Lenis from '@studio-freight/lenis'
@@ -10,7 +11,7 @@ import 'swiper/css/effect-fade'
 // import { Application, Assets, Sprite } from 'pixi.js'
 import * as PIXI from 'pixi.js'
 
-gsap.registerPlugin(ScrollTrigger, Flip)
+gsap.registerPlugin(CSSRulePlugin, ScrollTrigger, Flip)
 const mm = gsap.matchMedia()
 
 const sel = (e) => document.querySelector(e)
@@ -22,10 +23,6 @@ function raf(time) {
   requestAnimationFrame(raf)
 }
 requestAnimationFrame(raf)
-const navLinkActive = document.getElementsByClassName('navbar__link w-nav-link w--current')[0]
-const primColor = getComputedStyle(navLinkActive).getPropertyValue('color')
-document.querySelector('html').style.setProperty('--primary-color', primColor, 'important')
-console.log(primColor)
 
 switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'canvas':
@@ -54,6 +51,24 @@ function introSec() {
 }
 function canvas() {
   console.log('canvas')
+
+  const mapCard$a = selAll('.map-sec__card')
+  const mapCardWrapIn$a = selAll('.map-sec__card-wrapin')
+  const mapCardWrap$a = selAll('.map-sec__card-wrap')
+
+  const mapSec_ = 'map-sec'
+  const mapDotActive_ = 'canvas__map__dot--active'
+  const mapDotLine_ = 'canvas__map__dot__line'
+
+  const map$ = sel('.canvas__map')
+  const mapSec$ = sel(mapSec_)
+  const mapWrap$ = sel('.canvas__map-wrap')
+  const mapWrapIn$ = sel('.canvas__map-wrapin')
+  const mapFg$ = sel('.canvas__map__fg')
+  const mapFgWrap$ = sel('.canvas__map__fg-wrap')
+  const mapDot$a = selAll('.canvas__map__dot')
+  const mapBg$ = sel('.canvas__map__bg-img')
+  const mapBgWrap$ = sel('.canvas__map__bg-wrap')
 
   const canvasWrap$ = sel('.canvas-wrap')
   let canvasWrapWidth = canvasWrap$.clientWidth
@@ -115,6 +130,153 @@ function canvas() {
       canvasScInit()
     })
   )
+  const mapDotRemoveActiveClass = () => {
+    const activeDots = [...mapDot$a].filter((el) => el.classList.contains(mapDotActive_))
+    activeDots.forEach((el) => el.classList.remove(mapDotActive_))
+  }
+  const cardSpeed = 0.5
+  let mapCardInAni
+  let mapCardOutAni
+  let mapScrollInitTl
+  mapDotRemoveActiveClass()
+
+  mapScrollInitTl = gsap
+    .timeline({ defaults: { ease: 'none', duration: 5 } })
+    .to(mapFg$, { y: '-20vh' }, 0)
+    .to(mapBg$, { y: '-10vh' }, 0)
+    .to(mapFg$, { scale: 1.2 }, 0)
+    .to(mapBg$, { scale: 1.2 * 0.84 }, 0)
+    .to(
+      {},
+      {
+        onComplete: mapCardInAni,
+        onCompleteParams: [0],
+        onReverseComplete: mapCardOutAni,
+        onReverseCompleteParams: [0, 'scrollingUp'],
+        duration: 0.001,
+      },
+      3.5
+    )
+    .addLabel('mapIntroDone', '>')
+  mapCardInAni = (i) => {
+    if (elementInViewport('.' + mapSec_)) {
+      // prevent overlapping tweens on fast scroll (end/home on keyboard)
+      gsap.timeline().to(mapCardWrap$a[i], { opacity: 1, top: '50%', duration: cardSpeed })
+      mapDot$a[i].classList.add(mapDotActive_)
+    }
+  }
+  mapCardOutAni = (i, scrollDirection = 'scrollingDown') => {
+    const direction = scrollDirection === 'scrollingUp' ? '55%' : '45%'
+    gsap.timeline().to(mapCardWrap$a[i], { opacity: 0, top: direction, duration: cardSpeed })
+    mapDotRemoveActiveClass()
+  }
+  const mapScrollTl = gsap
+    .timeline({ defaults: { ease: 'none', duration: 5 } })
+    .addLabel('card-a')
+    .to(mapFgWrap$, { y: '-60vh' }, 0)
+    .to(mapBgWrap$, { y: -60 * 0.8 + 'vh' }, 0)
+    .to(
+      {},
+      {
+        onComplete: mapCardOutAni,
+        onCompleteParams: [0],
+        onReverseComplete: mapCardInAni,
+        onReverseCompleteParams: [0],
+        duration: 0.001,
+      },
+      2.5 // DO NOT OVERLAP EVENT TWEENS!!!
+    )
+    .addLabel('card-b', 5)
+    .to(
+      {},
+      {
+        onComplete: mapCardInAni,
+        onCompleteParams: [1],
+        onReverseComplete: mapCardOutAni,
+        onReverseCompleteParams: [1, 'scrollingUp'],
+        duration: 0.001,
+      },
+      3.5
+    )
+    .set([mapFgWrap$, mapBgWrap$], { transformOrigin: '100% 60%' })
+    .to(mapFgWrap$, { scale: 1.9 }, 5)
+    .to(mapBgWrap$, { scale: 1.9 * 0.8 }, 5)
+    .to(
+      {},
+      {
+        onComplete: mapCardOutAni,
+        onCompleteParams: [1],
+        onReverseComplete: mapCardInAni,
+        onReverseCompleteParams: [1],
+        duration: 0.001,
+      },
+      7.5
+    )
+    .addLabel('card-c', 10)
+    .to(
+      {},
+      {
+        onComplete: mapCardInAni,
+        onCompleteParams: [2],
+        onReverseComplete: mapCardOutAni,
+        onReverseCompleteParams: [2, 'scrollingUp'],
+        duration: 0.001,
+      },
+      8.5
+    )
+    .to(mapFgWrap$, { y: '-85vh' }, 10)
+    .to(mapBgWrap$, { y: -85 * 0.8 + 'vh' }, 10)
+    .to(
+      {},
+      {
+        onComplete: mapCardOutAni,
+        onCompleteParams: [2],
+        onReverseComplete: mapCardInAni,
+        onReverseCompleteParams: [2],
+        duration: 0.001,
+      },
+      14
+    )
+    .addLabel('finish', 15)
+  const mapStAnimation = ScrollTrigger.create({
+    animation: mapScrollTl,
+    trigger: mapSec$,
+    start: 'top top',
+    end: 'bottom+=1000 top',
+    pin: mapWrap$,
+    scrub: 1,
+    snap: 'labelsDirectional',
+    duration: { min: 0.2, max: 1 },
+  })
+
+  mapCardWrap$a.forEach((el) => {
+    gsap.set(el, { opacity: 0, position: 'fixed', top: '55%', translateY: '-50%' })
+  })
+  const mapInitStAnimation = ScrollTrigger.create({
+    animation: mapScrollInitTl,
+    trigger: mapSec$,
+    start: 'top 80%',
+    end: 'top top',
+    scrub: 1,
+    snap: 1,
+  })
+  const mapDotsObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.target.classList.contains(mapDotActive_)) {
+        window.addEventListener('scroll', () => {
+          if (mapStAnimation.isActive || mapInitStAnimation.isActive) {
+            const mapFgScale = gsap.getProperty(mapFg$, 'scale')
+            const mapFgWrapScale = gsap.getProperty(mapFgWrap$, 'scale')
+            const lineWidth = (mutation.target.getBoundingClientRect().left - mapCard$a[0].getBoundingClientRect().right - 30) / (mapFgScale * mapFgWrapScale)
+            mutation.target.querySelector('.' + mapDotLine_).style.width = lineWidth + 'px'
+          }
+        })
+      }
+    })
+  })
+  for (let mapDot of mapDot$a) {
+    // mapDotsObserver.observe(mapDot, { attributes: true, attributeFilter: ['class'] })
+  }
 }
 function blog() {
   mm.add('(min-width: 992px)', () => {
@@ -522,7 +684,7 @@ function elementInViewport(el) {
     return false
   }
 }
-
+// Debounce
 function debounce(func, time = 100) {
   let timer
   return function (event) {
