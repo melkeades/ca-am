@@ -430,6 +430,7 @@ function home() {
         trigger: item,
         start: 'top 80%',
         duration: { min: 0.2, max: 1 },
+        toggleActions: 'play none none reverse',
       })
     })
   })
