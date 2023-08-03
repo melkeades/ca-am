@@ -194,6 +194,7 @@ function home() {
   const mapCards_ = '.map-sec__cards' // swiper-wrapper
   const mapCardWrap_ = '.map-sec__card-wrap' // swiper-slide
   const mapCardsWrapIn$ = sel(mapCardsWrapIn_) // swiper
+  const mapCardsWrapIn$a = selAll(mapCardsWrapIn_) // swiper
   const mapCards$ = sel(mapCards_) // swiper-wrapper
   const mapCardWrap$a = selAll(mapCardWrap_) // swiper-slide
 
@@ -339,6 +340,7 @@ function home() {
         },
         2.5 // DO NOT OVERLAP EVENT TWEENS!!!
       )
+      .set(selAll('.map-sec__card-wrapin')[0], { opacity: 0 }, 3.49)
       .addLabel('card-b', 5)
       .to(
         {},
@@ -420,6 +422,7 @@ function home() {
       const img = item.querySelector('.' + featuresImg_)
       const imgWrap = item.querySelector('.' + featuresImgWrap_)
       const info = item.querySelector('.' + featuresInfo_)
+
       featuresScrollTl = gsap
         .timeline({ defaults: { ease: 'power2.out', duration: 2 } })
         .to(imgWrap, { marginLeft: 80, marginRight: 80 }, '0')
