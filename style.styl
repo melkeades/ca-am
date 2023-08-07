@@ -1,15 +1,27 @@
-*
-  // transition-duration 0.3s
+.blog-card__title, .blog-card-wrapin
+  transition-duration 0.4s
+  // transition text-decoration 0.4s !important
+  text-decoration underline solid transparent !important
 
-.blog-card__title-wrap
-  a
-    transition-duration 0.3s
-    transition text-decoration 0.5s !important
-    text-decoration underline solid transparent !important
+.blog-card__title:hover, .blog-card-wrapin:hover
+  // transition text-decoration 0.4s !important
+  text-decoration underline solid currentColor !important
 
-  a:hover
-    transition text-decoration 0.5s
-    text-decoration underline solid Currentcolor !important
+.blog-card-wrapin, .blog-card-wrapin:hover, .blog-hero__video-wrap, .blog-hero__video-wrap:hover
+  transition-duration 0.4s
+
+  .blog-card__img__play-btn
+    transition-duration inherit
+
+  svg
+    transition-duration 1s
+
+.blog-card-wrapin:hover, .blog-hero__video-wrap:hover
+  .blog-card__img__play-btn
+    background white
+
+    svg
+      color black
 
 :root
   margin 0
@@ -109,3 +121,6 @@ html
   .intro-sec__video iframe
     width 300%
     left -100%
+
+input, input:focus, textarea:focus, select:focus, *:focus
+  border none

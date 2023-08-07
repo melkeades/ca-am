@@ -26,9 +26,6 @@ requestAnimationFrame(raf)
 const globalStylesEmbed$ = sel('.global-styles')
 const primColor = getComputedStyle(globalStylesEmbed$).getPropertyValue('color')
 document.querySelector(':root').style.setProperty('--primary-color', primColor, 'important')
-document.querySelector('.navbar .btn').addEventListener('click', () => {
-  document.querySelector('.connect-mod__trigger').click()
-})
 
 switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'home':
@@ -43,8 +40,8 @@ switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'blog-post':
     blogPost()
     break
-  case 'news':
-    news()
+  case 'videos':
+    videos()
     break
   case '':
     console.log('no data-page provided')
@@ -128,25 +125,61 @@ function canvas() {
     })
   )
 }
-function news() {
+function videos() {
+  const mouseoverEvent = new Event('mouseover')
+
+  var events = new MouseEvent('mouseover', {
+    // view: window,
+    bubbles: true,
+    // cancelable: true,
+  })
   const heroTitle$ = sel('.blog-hero__title')
   const heroBtn$ = sel('.blog-hero__info .btn-outline')
   const heroVideo$ = sel('.blog-hero__video')
+  // function fd() {
+  //   console.log('vvv')
+  // }
+  // heroVideo$.setAttribute('onmouseover', `console.log('ccc')`)
+  // var event = new MouseEvent('mouseover', {
+  //   view: window,
+  //   bubbles: true,
+  //   cancelable: true,
+  // })
+  // const hover = getComputedStyle(heroVideo$, 'hover').getPropertyValue('opacity')
+  // var applyHoverStyle = function () {
+  //   var div = heroVideo$
+  //   var i,
+  //     j,
+  //     sel = /div:hover/,
+  //     aProperties = []
+  //   for (i = 0; i < document.styleSheets.length; ++i) {
+  //     // console.log(document.styleSheets[i])
+  //     if (document.styleSheets[i].cssRules !== null) {
+  //       for (j = 0; j < document.styleSheets[i].cssRules.length; ++j) {
+  //         if (sel.test(document.styleSheets[i].cssRules[j].selectorText)) {
+  //           aProperties.push(document.styleSheets[i].cssRules[j].style.cssText)
+  //           // console.log(document.styleSheets[i].cssRules[j].selectorText, document.styleSheets[i].cssRules[j].style.cssText)
+  //         }
+  //       }
+  //     }
+  //   }
+  //   //console.log(aProperties);
+  //   div.style.cssText = aProperties.join(' ')
+  // }
+  // applyHoverStyle()
   ;[heroTitle$, heroBtn$].forEach((el) => {
     const rec = heroVideo$.getBoundingClientRect()
     el.addEventListener('click', (e) => {
       heroVideo$.click()
+      // heroVideo$.dispatchEvent(mouseoverEvent)
+      // heroVideo$.style.opacity = 0.5
+    })
+    el.addEventListener('mouseenter', (e) => {
+      // console.log('hov')
+      // heroVideo$.dispatchEvent(event)
+      // heroVideo$.onmouseover()
     })
   })
-  const lightbox_ = '.w-lightbox-content.w-lightbox-group'
-  const lightboxStrip_ = '.w-lightbox-strip'
-  const sheet = new CSSStyleSheet()
-  sheet
-    .replace(`${lightbox_} { height: 100% !important; } ${lightboxStrip_} { display: none !important;}`)
-    .then((document.adoptedStyleSheets = [sheet]))
-    .catch((err) => {
-      console.error('Failed to replace styles:', err)
-    })
 }
 function blog() {
   mm.add('(min-width: 992px)', () => {
