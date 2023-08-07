@@ -26,8 +26,12 @@ requestAnimationFrame(raf)
 const globalStylesEmbed$ = sel('.global-styles')
 const primColor = getComputedStyle(globalStylesEmbed$).getPropertyValue('color')
 document.querySelector(':root').style.setProperty('--primary-color', primColor, 'important')
-document.querySelector('.navbar .btn').addEventListener('click', () => {
-  document.querySelector('.connect-mod__trigger').click()
+const connectBtn$ = document.querySelector('.navbar .btn')
+const connectLink$ = sel('.navbar__link--connect')
+;[connectBtn$, connectLink$].forEach((el) => {
+  el.addEventListener('click', () => {
+    document.querySelector('.connect-mod__trigger').click()
+  })
 })
 
 switch (sel('.page-wrapper').getAttribute('data-page')) {
