@@ -26,13 +26,13 @@ requestAnimationFrame(raf)
 const globalStylesEmbed$ = sel('.global-styles')
 const primColor = getComputedStyle(globalStylesEmbed$).getPropertyValue('color')
 document.querySelector(':root').style.setProperty('--primary-color', primColor, 'important')
-const connectBtn$ = document.querySelector('.navbar .btn')
-const connectLink$ = sel('.navbar__link--connect')
-;[connectBtn$, connectLink$].forEach((el) => {
-  el.addEventListener('click', () => {
-    document.querySelector('.connect-mod__trigger').click()
-  })
-})
+// const connectBtn$ = document.querySelector('.navbar .btn')
+// const connectLink$ = document.querySelector('.navbar__link--connect')
+// ;[connectBtn$, connectLink$].forEach((el) => {
+//   el.addEventListener('click', () => {
+//     // document.querySelector('.connect-mod__trigger').click()
+//   })
+// })
 
 switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'home':
@@ -183,7 +183,8 @@ function blogPost() {
   console.log('blog post')
   introSec()
   const videoFrame = sel('.intro-sec__video iframe')
-  if (!sel('.blog-post__intro-sec-wrap').classList.contains('w-condition-invisible')) {
+  const blogPostIntroSec$ = sel('.blog-post__intro-sec-wrap')
+  if (!blogPostIntroSec$.classList.contains('w-condition-invisible')) {
     const ytRegEx = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi
     const ytId = ytRegEx.exec(videoFrame.src)[1]
     const ytLink = `https://www.youtube.com/embed/${ytId}?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&mute=1&playlist=${ytId}`
