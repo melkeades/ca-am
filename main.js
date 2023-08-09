@@ -153,15 +153,15 @@ function canvas() {
   )
 }
 function news() {
-  const heroTitle$ = sel('.blog-hero__title')
-  const heroBtn$ = sel('.blog-hero__info .btn-outline')
-  const heroVideo$ = sel('.blog-hero__video')
-  ;[heroTitle$, heroBtn$].forEach((el) => {
-    const rec = heroVideo$.getBoundingClientRect()
-    el.addEventListener('click', (e) => {
-      heroVideo$.click()
-    })
-  })
+  // const heroTitle$ = sel('.blog-hero__title')
+  // const heroBtn$ = sel('.blog-hero__info .btn-outline')
+  // const heroVideo$ = sel('.blog-hero__video')
+  // ;[heroTitle$, heroBtn$].forEach((el) => {
+  //   const rec = heroVideo$.getBoundingClientRect()
+  //   el.addEventListener('click', (e) => {
+  //     heroVideo$.click()
+  //   })
+  // })
   const lightbox_ = '.w-lightbox-content.w-lightbox-group'
   const lightboxStrip_ = '.w-lightbox-strip'
   const sheet = new CSSStyleSheet()
