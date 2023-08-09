@@ -1,4 +1,5 @@
 import './style.styl'
+import '@chenfengyuan/datepicker/src/css/datepicker.css'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import Flip from 'gsap/Flip'
@@ -7,6 +8,8 @@ import Swiper from 'swiper'
 import { Navigation, Autoplay, EffectFade } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
+import $ from 'jquery'
+import * as datepicker from '@chenfengyuan/datepicker'
 // import { Application, Assets, Sprite } from 'pixi.js'
 // import * as PIXI from 'pixi.js'
 
@@ -50,6 +53,9 @@ switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'news':
     news()
     break
+  case 'contest':
+    contest()
+    break
   case '':
     console.log('no data-page provided')
     break
@@ -68,6 +74,20 @@ function introSec() {
     })
   })
 }
+function contest() {
+  // console.log('co')
+  $('[data-toggle="datepicker"]').datepicker({
+    format: 'mm-dd-yyyy',
+  })
+  // Available date placeholders:
+  // Year: yyyy
+  // Month: mm
+  // Day: dd
+  if (window.innerWidth < 768) {
+    $('[data-toggle="datepicker"]').attr('readonly', 'readonly')
+  }
+}
+
 function canvas() {
   console.log('canvas')
 

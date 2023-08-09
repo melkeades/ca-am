@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@adobe/css-tools/-/css-tools-4.2.0.tgz#e1a84fca468f4b337816fcb7f0964beb620ba855"
   integrity sha512-E09FiIft46CmH5Qnjb0wsW54/YQd69LsxeKUOWawmws1XWvyFGURnAChH0mlr7YPFR1ofwvUQfcL0J3lMxXqPA==
 
+"@chenfengyuan/datepicker@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@chenfengyuan/datepicker/-/datepicker-1.0.10.tgz#33d544d80f8f0a10dcb6194136ea5639d285b3d5"
+  integrity sha512-w016ygdUgBY6hhV7HFKRy2DeSiRPPczekA6FJfIpmqQYh5leKne4WvW/YWOCY1xrQVvamdLyhMhbsn8vN5iQAg==
+
 "@esbuild/android-arm64@0.18.11":
   version "0.18.11"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.18.11.tgz#fa6f0cc7105367cb79cc0a8bf32bf50cb1673e45"
@@ -504,6 +509,11 @@ ismobilejs@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ismobilejs/-/ismobilejs-1.1.1.tgz#c56ca0ae8e52b24ca0f22ba5ef3215a2ddbbaa0e"
   integrity sha512-VaFW53yt8QO61k2WJui0dHf4SlL8lxBofUuUmwBo0ljPk0Drz2TiuDW4jo3wDcv41qy/SxrJ+VAzJ/qYqsmzRw==
+
+jquery@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.0.tgz#fe2c01a05da500709006d8790fe21c8a39d75612"
+  integrity sha512-umpJ0/k8X0MvD1ds0P9SfowREz2LenHsQaxSohMZ5OMNEU2r0tf8pdeEFTHMFxWVxKNyU9rTtK3CWzUCTKJUeQ==
 
 minimatch@^3.1.1:
   version "3.1.2"

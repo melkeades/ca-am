@@ -12,8 +12,10 @@
     "vite": "^4.4.0"
   },
   "dependencies": {
+    "@chenfengyuan/datepicker": "^1.0.10",
     "@studio-freight/lenis": "^1.0.16",
     "gsap": "^3.12.2",
+    "jquery": "^3.7.0",
     "pixi.js": "^7.2.4",
     "stylus": "^0.59.0",
     "swiper": "^10.0.4"
