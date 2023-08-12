@@ -55,12 +55,6 @@ html
     color var(--primary-color)
 
 @media screen and (min-width 992px)
-  .about-sec
-    height 100vh !important
-
-  .about-sec__slider
-    height 100% !important
-
   .map-sec__card::before, .features-sec__img-wrap::before, .blog-hero__img-wrap::before
     position absolute
     content ''
@@ -98,6 +92,13 @@ html
 
   .map__dot__line
     display none
+
+@media screen and (min-width 478px)
+  .about-sec
+    height 100vh !important
+
+  .about-sec__slider
+    height 100% !important
 
 @media screen and (max-width 478px)
   .map-sec__cards-wrapin
