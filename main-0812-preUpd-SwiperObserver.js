@@ -322,23 +322,37 @@ function home() {
     },
   })
   aboutSwiper.autoplay.pause()
-  new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          aboutSwiper.autoplay.resume()
-          // console.log('about swiper started')
-        } else {
-          aboutSwiper.autoplay.pause()
-          // console.log('about swiper stopped')
-        }
-      })
-    },
-    {
-      root: null, // relative to the viewport
-      threshold: 0.8, // 80% of the section's in viewport
+  const target = aboutSec$
+  function callback(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        aboutSwiper.autoplay.resume()
+        console.log('about swiper started')
+      } else {
+        aboutSwiper.autoplay.pause()
+        console.log('about swiper stopped')
+      }
+    })
+  }
+  function createObserver(target, callback) {
+    const options = {
+      root: null, // null = viewport
+      threshold: 0.8, // about swiper 80% in viewport
     }
-  ).observe(aboutSec$)
+    const observer = new IntersectionObserver(callback, options)
+    observer.observe(target)
+  }
+
+  createObserver(target, callback)
+  // new IntersectionObserver((entries, observer) => {
+  //   if (entries[0].isIntersecting) {
+  //   // if (entries[0].intersectionRatio >= 0.1) {
+  //     console.log('v')
+
+  //     observer.disconnect()
+  //     aboutSwiper.autoplay.resume()
+  //   }
+  // }).observe(aboutSec$)
 
   mm.add('(min-width: 992px)', () => {
     console.log('adding sc')
