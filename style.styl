@@ -1,3 +1,18 @@
+html.lenis
+  height auto
+
+.lenis.lenis-smooth
+  scroll-behavior auto
+
+.lenis.lenis-smooth [data-lenis-prevent]
+  overscroll-behavior contain
+
+.lenis.lenis-stopped
+  overflow hidden
+
+.lenis.lenis-scrolling iframe
+  pointer-events none
+
 .blog-card__title, .blog-card-wrapin
   transition-duration 0.4s
   // transition text-decoration 0.4s !important
@@ -132,3 +147,16 @@ html
 
 input, input:focus, textarea:focus, select:focus, *:focus
   border none
+
+/*
+// BLOG MAIN ----------------------------------------------------------------
+.blog-hero__img:not([src='']), .blog-card__img:not([src=''])
+  background-image none !important
+
+// BLOG POST --------------------------------
+.blog-post__cover
+  display block !important
+
+.blog-post__cover:not([src=''])
+  background-image none !important
+*/
