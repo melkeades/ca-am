@@ -277,14 +277,13 @@ function home() {
   let mapDotsObserver
 
   const aboutSwiper = new Swiper('.about-sec__slider', {
-    // init: false,
+    // disabled: true,
     slidesPerView: 1,
     slidesPerGroup: 1,
     spaceBetween: 20,
     modules: [Navigation, Autoplay, EffectFade],
     speed: 1000,
-    rewind: true, // nextEl button rewinds
-    loop: true,
+    // rewind: true,
     fadeEffect: {
       crossFade: true,
     },
@@ -292,14 +291,29 @@ function home() {
     autoplay: {
       delay: 5000,
       disableOnInteraction: false,
-      stopOnLastSlide: false,
+      stopOnLastSlide: true,
     },
     on: {
+      autoplayTimeLeft(s, time, progress) {
+        if (s.activeIndex < 2) {
+          const progIndex = s.activeIndex > 1 ? 1 : s.activeIndex
+          aboutProgressBar$a[progIndex].style.setProperty('--about-progress', (1 - progress) * 100 + '%')
+        }
+        // progressContent.textContent = `${Math.ceil(time / 1000)}s`;
+      },
       realIndexChange: (s) => {
         selAll('.progress__title.is--active').forEach((el) => {
           el.classList.remove('is--active')
         })
         selAll('.progress__title')[s.realIndex].classList.add('is--active')
+        const progress = selAll('.progress-line')
+        if (s.realIndex === 1) {
+          progress[0].classList.add('hide')
+          progress[1].classList.remove('hide')
+        } else if (s.realIndex === 0) {
+          progress[0].classList.remove('hide')
+          progress[1].classList.add('hide')
+        }
       },
     },
     navigation: {
