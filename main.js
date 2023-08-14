@@ -226,6 +226,7 @@ function home() {
     player.playVideo()
   })
 
+  introSec()
   const videoHero$ = sel('.video-hero')
   const introSec$ = sel('.intro-sec')
   const aboutSec$ = sel('.about-sec')
