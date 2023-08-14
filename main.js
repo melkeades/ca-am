@@ -216,27 +216,24 @@ function blogPost() {
 function home() {
   const heroBtn$ = sel('#aboutBtn')
   const heroBg$ = sel('#aboutBg')
-  // ;[heroBtn$, heroBg$].forEach((el) => {    addEventListener(el, 'click', (e) => {})  })
+  const heroClose$ = sel('#aboutX')
+  ;[heroClose$, heroBg$].forEach((el) => {
+    el.addEventListener('click', (e) => {
+      player.stopVideo()
+    })
+  })
   heroBtn$.addEventListener('click', (e) => {
-    // console.log('play')
     player.playVideo()
   })
 
-  heroBg$.addEventListener('click', (e) => {
-    // console.log('stop')
-    player.stopVideo()
-  })
-  introSec()
-
   const videoHero$ = sel('.video-hero')
-
   const introSec$ = sel('.intro-sec')
   const aboutSec$ = sel('.about-sec')
   const mapSec$ = sel('.map-sec')
   const featuresSec$ = sel('.features-sec')
   let mapSwiper
 
-  devMode(1)
+  devMode(0)
   function devMode(mode) {
     if (mode === 0) {
       return
