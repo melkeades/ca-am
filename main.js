@@ -362,6 +362,7 @@ function home() {
       const direction = scrollDirection === 'scrollingUp' ? '55%' : '45%'
       gsap.timeline().to(mapCardWrap$a[i], { opacity: 0, top: direction, duration: cardSpeed })
     }
+    gsap.set(mapFg$, { x: '-10vw' })
 
     mapScrollInitTl = gsap
       .timeline({ defaults: { ease: 'none', duration: 5 } })

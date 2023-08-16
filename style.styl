@@ -148,6 +148,33 @@ html
 input, input:focus, textarea:focus, select:focus, *:focus
   border none
 
+/* Portrait */
+@media screen and (min-device-height 320px) and (max-device-height 460px) and (min-device-width 568px) and (max-device-width 991px)
+  .connect-mod__fg
+    padding 20px !important
+
+  .connect-mod__form, .connect-mod__info
+    grid-row-gap 0px !important
+
+  .form-wrap
+    grid-column-gap 15px !important
+    grid-row-gap 5px !important
+
+  .form__input-1x3-wrap
+    align-self stretch !important
+    flex-basis 21% !important
+
+  .form__label
+    margin-bottom 0 !important
+    font-size 12px !important
+
+  .form__input
+    height 40px !important
+
+  .form__input-1x1-wrap
+    align-self stretch
+    flex-basis 26% !important
+
 /*
 // BLOG MAIN ----------------------------------------------------------------
 .blog-hero__img:not([src='']), .blog-card__img:not([src=''])
