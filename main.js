@@ -457,6 +457,7 @@ function home() {
         },
         14
       )
+      .to('.map__bg-wrap', { opacity: 0, duration: 3 }, '10')
 
     aboutStAnimation = ScrollTrigger.create({
       animation: aboutStTl,
@@ -488,6 +489,7 @@ function home() {
       scrub: 1,
       snap: 1,
     })
+
     featuresItem$a.forEach((item) => {
       const img = item.querySelector('.' + featuresImg_)
       const imgWrap = item.querySelector('.' + featuresImgWrap_)
