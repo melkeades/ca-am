@@ -184,30 +184,44 @@ function news() {
     })
 }
 function blog() {
+  const heroImg = sel('.blog-hero__img')
+  const heroImgWrap = sel('.blog-hero__img-wrap')
+  const heroInfo = sel('.blog-hero__info')
+  const blogCard$a = selAll('.blog-card')
+  const blogItems = sel('.blog__items')
+  let blogCardsTl = gsap
+    .timeline()
+    .from([blogCard$a[0], blogCard$a[1], blogCard$a[2]], { opacity: 0, y: 100, duration: 1, ease: 'power2.out', stagger: 0.15 }, 0)
   mm.add('(min-width: 992px)', () => {
     {
-      const heroImg = sel('.blog-hero__img')
-      const heroImgWrap = sel('.blog-hero__img-wrap')
-      const heroInfo = sel('.blog-hero__info')
-      const blogCard$a = selAll('.blog-card')
-      const blogItems = sel('.blog__items')
-
       gsap
         .timeline({ defaults: { ease: 'power4.out', duration: 3 } })
         .from('html', { '--blog-hero__img-outline-width': 'calc(100% - 300px)', duration: 1 }, 0)
         .fromTo(heroImgWrap, { width: '100%' }, { width: 520 }, '-=1.4')
         .from(heroInfo, { opacity: 0, y: 100 }, 0)
 
-      if (document.documentElement.clientHeight / 2 < blogCard$a[0].getBoundingClientRect().top) {
-        ScrollTrigger.create({
-          animation: gsap
-            .timeline()
-            .from([blogCard$a[0], blogCard$a[1], blogCard$a[2]], { opacity: 0, y: 100, duration: 1, ease: 'power2.out', stagger: 0.15 }, 0),
-          trigger: blogItems,
-          start: 'top center',
-        })
-      }
+      ScrollTrigger.create({
+        animation: blogCardsTl,
+        trigger: blogItems,
+        start: 'top center+=25%',
+      })
     }
+  })
+  const filterAllCheckbox$ = sel('.filter-check__item--all>input')
+  filterAllCheckbox$.setAttribute('disabled', '')
+  selAll('.filter-check__item:not(.filter-check__item--all').forEach((el) => {
+    el.addEventListener('click', () => {
+      if (filterAllCheckbox$.checked) {
+        filterAllCheckbox$.checked = false
+        if (blogCardsTl.progress() !== 1) {
+          blogCardsTl.progress(1)
+        }
+      } else {
+        if (selAll('.filter-check__item>input:checked').length === 0) {
+          filterAllCheckbox$.checked = true
+        }
+      }
+    })
   })
 }
 function blogPost() {
