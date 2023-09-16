@@ -74,6 +74,17 @@ function introSec() {
     })
   })
 }
+function blogIntroSec() {
+  mm.add('(min-width: 992px)', () => {
+    const introCardStAnimation = ScrollTrigger.create({
+      animation: gsap.timeline().to('.blog-post__intro-sec__card-wrap', { transform: 'translate(0%, calc(-50% - 150px))' }),
+      trigger: '.blog-post__intro-sec',
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 1,
+    })
+  })
+}
 function contest() {
   // console.log('co')
   $('[data-toggle="datepicker"]').datepicker({
@@ -201,7 +212,7 @@ function blog() {
 }
 function blogPost() {
   console.log('blog post')
-  introSec()
+  blogIntroSec()
   const videoFrame = sel('.intro-sec__video iframe')
   const blogPostIntroSec$ = sel('.blog-post__intro-sec-wrap')
   if (!blogPostIntroSec$.classList.contains('w-condition-invisible')) {
