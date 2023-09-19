@@ -203,9 +203,47 @@ input, input:focus, textarea:focus, select:focus, *:focus
     align-self stretch
     flex-basis 26% !important
 
-/*
 // BLOG MAIN ---
+@media screen and (min-width 992px)
+  .filter-select__select
+    height 3rem !important
+    border none
+    overflow hidden
 
+    // opacity 0.5
+    // border 0 !important
+    // overflow visible !important
+    // display flex !important
+
+    // display inline-block
+    >option
+      // display block !important
+      // opacity 0.5
+      // background #000
+      // width 60px
+      // font-size 1.2em
+      font-weight 600
+      padding 0 20px
+      align-items center
+      // margin-right 20px
+      display inline-flex
+      cursor pointer
+      height 100%
+
+    >option:not(:first-child)
+      box-shadow 0px 0px 0px 1px rgba(0, 0, 0, 0.1)
+
+    >option:checked
+      background #b2bf4a linear-gradient(0deg, #b2bf4a 0%, #b2bf4a 100%)
+      color -internal-inactive-list-box-selection-text !important
+
+      &::-moz-focus-inner
+        border 0
+
+      &:focus
+        outline none
+
+/*
 .filter-check__item:not(.filter-check__item--all)
   // border-left 1px solid rgba(0, 0, 0, 0.1)
   // background-clip padding-box

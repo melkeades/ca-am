@@ -189,11 +189,16 @@ function blog() {
   const heroInfo = sel('.blog-hero__info')
   const blogCard$a = selAll('.blog-card')
   const blogItems = sel('.blog__items')
+  const filterSelect$ = sel('.filter-select__select')
+  filterSelect$.querySelector('option:first-child').setAttribute('selected', '')
+
   let blogCardsTl = gsap
     .timeline()
     .from([blogCard$a[0], blogCard$a[1], blogCard$a[2]], { opacity: 0, y: 100, duration: 1, ease: 'power2.out', stagger: 0.15 }, 0)
   mm.add('(min-width: 992px)', () => {
     {
+      filterSelect$.setAttribute('multiple', '')
+
       gsap
         .timeline({ defaults: { ease: 'power4.out', duration: 3 } })
         .from('html', { '--blog-hero__img-outline-width': 'calc(100% - 300px)', duration: 1 }, 0)
@@ -207,22 +212,71 @@ function blog() {
       })
     }
   })
-  const filterAllCheckbox$ = sel('.filter-check__item--all>input')
-  filterAllCheckbox$.setAttribute('disabled', '')
-  selAll('.filter-check__item:not(.filter-check__item--all').forEach((el) => {
-    el.addEventListener('click', () => {
-      if (filterAllCheckbox$.checked) {
-        filterAllCheckbox$.checked = false
-        if (blogCardsTl.progress() !== 1) {
-          blogCardsTl.progress(1)
-        }
-      } else {
-        if (selAll('.filter-check__item>input:checked').length === 0) {
-          filterAllCheckbox$.checked = true
-        }
-      }
-    })
+  mm.add('(max-width: 991px)', () => {
+    filterSelect$.removeAttribute('multiple')
   })
+
+  const filterCheckItem$a = selAll('.filter-check__item')
+
+  // filterCheckItem$a.forEach((el, i) => {
+  //   el.addEventListener('click', function (e) {
+  //     // event.preventDefault() // prevent double click trigger for checkboxes&radios
+  //     const filterInput = this.querySelector('input')
+  //     const filterValue = this.querySelector('span').textContent
+  //     if (!filterInput.checked) {
+  //       filterInput.checked = true
+  //       sel('.filter-select__select').value = filterValue != 'Show All' ? filterValue : ''
+  //       // sel('.filter-select__select').selectIndex = i
+  //       selAll('.filter-select__select>option')[i].dispatchEvent(new Event('change'))
+  //       sel('.filter-select__select').dispatchEvent(new Event('change'))
+  //       // console.log(selAll('.filter-select__select>option')[i], i)
+  //     }
+  //   })
+  // })
+  // filterCheckItem$a.forEach((el, i) => {
+  //   el.addEventListener('click', function (e) {
+  //     // event.preventDefault() // prevent double click trigger for checkboxes&radios
+  //     const filterInput = this.querySelector('input')
+  //     const filterValue = this.querySelector('span').textContent
+  //     if (!filterInput.checked) {
+  //       filterInput.checked = true
+  //       const $select = document.querySelector('.filter-select__select')
+  //       const $options = Array.from($select.options)
+  //       const optionToSelect = $options.find((item) => item.text === filterValue)
+  //       $select.value = optionToSelect.value
+  //       $select.focus()
+  //       $select.dispatchEvent(keyboardEvent)
+
+  //       $select.dispatchEvent(new Event('change'))
+
+  //       // sel('.filter-select__select').value = filterValue != 'Show All' ? filterValue : ''
+  //       // sel('.filter-select__select').selectIndex = i
+  //       selAll('.filter-select__select>option')[i].click()
+  //       selAll('.filter-select__select>option')[i].dispatchEvent(new Event('change'))
+  //       sel('.filter-select__select>option').click()
+  //       sel('.filter-select__select>option').dispatchEvent(new Event('change'))
+  //       // sel('.filter-select__select').dispatchEvent(new Event('change'))
+  //       // console.log(selAll('.filter-select__select>option')[i], i)
+  //     }
+  //   })
+  // })
+
+  // const filterAllCheckbox$ = sel('.filter-check__item--all>input')
+  // filterAllCheckbox$.setAttribute('disabled', '')
+  // selAll('.filter-check__item:not(.filter-check__item--all').forEach((el) => {
+  //   el.addEventListener('click', () => {
+  //     if (filterAllCheckbox$.checked) {
+  //       filterAllCheckbox$.checked = false
+  //       if (blogCardsTl.progress() !== 1) {
+  //         blogCardsTl.progress(1)
+  //       }
+  //     } else {
+  //       if (selAll('.filter-check__item>input:checked').length === 0) {
+  //         filterAllCheckbox$.checked = true
+  //       }
+  //     }
+  //   })
+  // })
 }
 function blogPost() {
   console.log('blog post')
