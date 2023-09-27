@@ -1,3 +1,8 @@
+:root
+  margin 0
+  background white
+  --primary-color #ffa756
+
 html.lenis
   height auto   /*
   // BLOG MAIN ----------------------------------------------------------------
@@ -25,51 +30,25 @@ html.lenis
 .lenis.lenis-scrolling iframe
   pointer-events none
 
-.blog-card__title, .blog-card-wrapin
-  transition-duration 0.4s
-  // transition text-decoration 0.4s !important
-  text-decoration underline solid transparent !important
+@media screen and (min-width 992px)
+  .home-blog-card
+    transition all 0.6s ease-in-out 0s
 
-.blog-card__title:hover, .blog-card-wrapin:hover
-  // transition text-decoration 0.4s !important
-  text-decoration underline solid currentColor !important
+    .home-blog-card__p-wrap
+      transition all 0.6s ease-in-out 0s
 
-.blog-card-wrapin, .blog-card-wrapin:hover, .blog-hero__video-wrap, .blog-hero__video-wrap:hover
-  transition-duration 0.4s
+    .home-blog-card__p
+      transition all 0.6s ease-in-out 0s
+      opacity 0
 
-  .blog-card__img__play-btn
-    transition-duration inherit
+  .home-blog-card:hover
+    background-color rgba(255, 255, 255, 1)
 
-  svg
-    transition-duration 1s
+    .home-blog-card__p-wrap
+      max-height 160px
 
-.blog-card-wrapin:hover, .blog-hero__video-wrap:hover
-  .blog-card__img__play-btn
-    background white
-
-    svg
-      color black
-
-:root
-  margin 0
-  background white
-  --primary-color #ffa756
-
-html
-  --blog-hero__img-outline-width calc(100% - 10px)
-  --about-progress 10%
-
-.progress-line__bar
-  width var(--about-progress)
-
-.approach-sec__topnav__item--active a
-  color white !important
-
-.map__dot--active
-  .map__dot__line
-    opacity 1 !important
-    width 1px
-    transition-duration 0.1s
+    .home-blog-card__p
+      opacity 1
 
 .map__fg-img
   transform translateZ(0)

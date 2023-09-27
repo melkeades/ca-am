@@ -308,10 +308,10 @@ function home() {
   introSec()
   const videoHero$ = sel('.video-hero')
   const introSec$ = sel('.intro-sec')
-  const blogSec$ = sel('.home-blog-sec')
+  const aboutSec$ = sel('.about-sec')
   const mapSec$ = sel('.map-sec')
   const featuresSec$ = sel('.features-sec')
-  let mapSwiper, blogSwiper
+  let mapSwiper
 
   devMode(0)
   function devMode(mode) {
@@ -325,7 +325,7 @@ function home() {
       })
       console.log('devMode, removed videos:', i)
     } else if (mode === 2) {
-      const devRemoveList = [videoHero$, introSec$, blogSec$]
+      const devRemoveList = [videoHero$, introSec$, aboutSec$]
       devRemoveList.forEach((el) => {
         el.remove()
       })
@@ -341,10 +341,6 @@ function home() {
   const mapCardsWrapIn$a = selAll(mapCardsWrapIn_) // swiper
   const mapCards$ = sel(mapCards_) // swiper-wrapper
   const mapCardWrap$a = selAll(mapCardWrap_) // swiper-slide
-
-  const blogSlider$ = sel('.blog__items-wrap')
-  const blogWrapper$ = sel('.blog-post__items')
-  const blogCard$a = selAll('.home-blog-card')
 
   const mapSec_ = 'map-sec'
 
@@ -370,26 +366,64 @@ function home() {
   let aboutStTl
   let mapDotsObserver
 
+  const aboutSwiper = new Swiper('.about-sec__slider', {
+    // init: false,
+    slidesPerView: 1,
+    slidesPerGroup: 1,
+    spaceBetween: 20,
+    modules: [Navigation, Autoplay, EffectFade],
+    speed: 1000,
+    rewind: true, // nextEl button rewinds
+    loop: true,
+    fadeEffect: {
+      crossFade: true,
+    },
+    effect: 'fade',
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+      stopOnLastSlide: false,
+    },
+    on: {
+      realIndexChange: (s) => {
+        selAll('.progress__title.is--active').forEach((el) => {
+          el.classList.remove('is--active')
+        })
+        selAll('.progress__title')[s.realIndex].classList.add('is--active')
+      },
+    },
+    navigation: {
+      nextEl: '.arrow-right',
+      prevEl: '.arrow-left',
+    },
+  })
+  aboutSwiper.autoplay.pause()
+  new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          aboutSwiper.autoplay.resume()
+          // console.log('about swiper started')
+        } else {
+          aboutSwiper.autoplay.pause()
+          // console.log('about swiper stopped')
+        }
+      })
+    },
+    {
+      root: null, // relative to the viewport
+      threshold: 0.8, // 80% of the section's in viewport
+    }
+  ).observe(aboutSec$)
+
   mm.add('(min-width: 992px)', () => {
-    aboutStTl = gsap
-      .timeline({ defaults: { duration: 3 } })
-      .set('.home-blog-sec__bg-wrap', { clipPath: 'inset(50px round 25px)' })
-      .to('.home-blog-sec__bg-wrap', { clipPath: 'inset(0px round 0px)' }, '<')
-      .to('.home-blog-sec__bg', { scale: 1.06 }, '<')
-    aboutStAnimation = ScrollTrigger.create({
-      animation: aboutStTl,
-      trigger: blogSec$,
-      start: 'top top',
-      end: 'bottom center',
-      pin: blogSec$,
-      scrub: 1,
+    console.log('adding sc')
+    selAll('.progress__title').forEach((el, i) => {
+      el.addEventListener('click', () => {
+        aboutSwiper.slideTo(i)
+      })
     })
-    if (blogSwiper) blogSwiper.destroy(true, true)
-    blogSlider$.classList.remove('swiper')
-    blogWrapper$.classList.remove('swiper-wrapper')
-    blogCard$a.forEach((el) => {
-      el.classList.remove('swiper-slide')
-    })
+
     if (mapSwiper) mapSwiper.destroy(true, true)
     mapCardsWrapIn$.classList.remove('swiper')
     mapCards$.classList.remove('swiper-wrapper')
@@ -427,6 +461,16 @@ function home() {
         3.5
       )
       .addLabel('mapIntroDone', '>')
+    aboutStTl = gsap
+      .timeline({ defaults: { duration: 3 } })
+      // .set('.card', { position: 'fixed' })
+      .set('.about-sec__item-wrap', { clipPath: 'inset(80px round 40px)' })
+      .to('.about-sec__item-wrap', { clipPath: 'inset(0px round 0px)' }, '<')
+      .to('.about-sec__slide__bg', { scale: 1.06 }, '<')
+      // .from('.card', { y: 50, opacity: 0, duration: 1.2 }, 0)
+      .from('.about-sec__progress', { opacity: 0, duration: 2 }, 1)
+    // .to('.about-sec__item-wrap', { borderRadius: '0', top: '0', bottom: '0', left: '0', right: '0' }, '<')
+    // .set('.card', { position: 'absolute' })
     const mapDuration = 15
     const mapShift = 100
     mapScrollTl = gsap
@@ -494,6 +538,14 @@ function home() {
       )
       .to('.map__bg-wrap', { opacity: 0, duration: 3 }, '10')
 
+    aboutStAnimation = ScrollTrigger.create({
+      animation: aboutStTl,
+      trigger: aboutSec$,
+      start: 'top top',
+      end: 'bottom center',
+      pin: aboutSec$,
+      scrub: 1,
+    })
     mapStAnimation = ScrollTrigger.create({
       animation: mapScrollTl,
       trigger: mapSec$,
@@ -537,26 +589,10 @@ function home() {
     })
   })
   mm.add('(max-width: 991px)', () => {
-    blogSlider$.classList.add('swiper')
-    blogWrapper$.classList.add('swiper-wrapper')
-    blogCard$a.forEach((el) => {
-      el.classList.add('swiper-slide')
-    })
     mapCardsWrapIn$.classList.add('swiper')
     mapCards$.classList.add('swiper-wrapper')
     mapCardWrap$a.forEach((el) => {
       el.classList.add('swiper-slide')
-    })
-    blogSwiper = new Swiper('.blog__items-wrap', {
-      slidesPerView: 1,
-      slidesPerGroup: 1,
-      spaceBetween: 40,
-      // modules: [Autoplay],
-      speed: 1000,
-      autoplay: {
-        delay: 5000,
-        disableOnInteraction: false,
-      },
     })
     mapSwiper = new Swiper('.map-sec__cards-wrapin', {
       slidesPerView: 1,
