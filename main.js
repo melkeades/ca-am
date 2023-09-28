@@ -117,7 +117,6 @@ function lp() {
   })
   lpItem$a.forEach((item) => {
     const imgWrap = item.querySelector('.lp-content__img-wrap')
-    const imgWrapOut = item.querySelector('.lp-content__img-wrap-out')
     const info = item.querySelector('.lp-content__info')
     const imgAniSt$ = item.querySelector('.lp-content__img-anist')
 
@@ -134,10 +133,8 @@ function lp() {
       toggleActions: 'play none none reverse',
     })
     ScrollTrigger.create({
-      animation: gsap
-        .timeline({ defaults: { ease: 'none', duration: 5 } })
-        .fromTo(imgAniSt$, { y: '10%' }, { y: '-10%' }, 0)
-        .from(imgWrap, { y: '100px' }, 0),
+      animation: gsap.timeline({ defaults: { ease: 'none', duration: 5 } }).fromTo(imgAniSt$, { y: '10%' }, { y: '-10%' }, 0),
+      // .from(imgWrap, { y: '100px' }, 0),
       trigger: item,
       start: 'top bottom',
       end: 'bottom top',
