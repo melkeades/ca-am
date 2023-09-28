@@ -477,7 +477,8 @@ function home() {
       .from('.home-blog-card', { y: 50 }, 0)
       .to('.home-blog-sec__bg-wrap', { clipPath: 'inset(0px round 0px)' }, '<')
       .to('.home-blog-sec__bg', { scale: 1.04 }, '<')
-      .from('.home-blog__title', { opacity: 0 }, '<')
+      .from('.home-blog__title', { opacity: 0, duration: 1 }, 0)
+    // .from('.home-blog__title', { opacity: 0 }, '<')
 
     aboutStAnimation = ScrollTrigger.create({
       animation: aboutStTl,
