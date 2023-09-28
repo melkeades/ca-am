@@ -102,13 +102,13 @@ function lp() {
   const lpHeroTitle$ = sel('.lp-hero__title')
   const lpHeroSubtitle$ = sel('.lp-hero__subtitle')
   const lpHeroP$ = sel('.lp-hero__p')
-  const lpHeroIntroTl = gsap
-    .timeline({ defaults: { ease: 'power4.out', duration: 1 } })
-    .from(lpHeroTitle$, { y: '100%' }, 0)
-    .from(lpHeroSubtitle$, { opacity: 0 }, 0.5)
-    .from(lpHeroP$, { opacity: 0 }, 0.8)
+  // const lpHeroIntroTl = gsap
+  //   .timeline({ defaults: { ease: 'power4.out', duration: 1 } })
+  //   .from(lpHeroTitle$, { y: '100%' }, 0)
+  //   .from(lpHeroSubtitle$, { opacity: 0 }, 0.5)
+  //   .from(lpHeroP$, { opacity: 0 }, 0.8)
   ScrollTrigger.create({
-    animation: gsap.timeline().fromTo(lpHeroInfo$, { y: '20%' }, { y: '-30%' }),
+    animation: gsap.timeline().fromTo(lpHeroInfo$, { y: '30%' }, { y: '-40%' }),
     trigger: lpHero$,
     start: 'top top',
     end: 'bottom top',
