@@ -30,25 +30,41 @@ html.lenis
 .lenis.lenis-scrolling iframe
   pointer-events none
 
-@media screen and (min-width 992px)
-  .home-blog-card
-    transition all 0.6s ease-in-out 0s
+// Blog/stories
+.home-blog-sec
+  .home-blog__items
+    padding 0
 
-    .home-blog-card__p-wrap
-      transition all 0.6s ease-in-out 0s
+  .home-blog__items-wrap
+    z-index 90 !important
 
-    .home-blog-card__p
-      transition all 0.6s ease-in-out 0s
-      opacity 0
+  @media screen and (min-width 992px)
+    .home-blog-card
+      transition background 0.6s ease-in-out 0s
 
-  .home-blog-card:hover
-    background-color rgba(255, 255, 255, 1)
+      .home-blog-card__p-wrap
+        transition all 0.6s ease-in-out 0s
 
-    .home-blog-card__p-wrap
-      max-height 160px
+      .home-blog-card__p
+        transition all 0.6s ease-in-out 0s
+        opacity 0
 
-    .home-blog-card__p
-      opacity 1
+    .home-blog-card:hover
+      background-color rgba(255, 255, 255, 1)
+
+      .home-blog-card__p-wrap
+        max-height 160px
+
+      .home-blog-card__p
+        opacity 1
+
+  @media screen and (max-width 991px)
+    .swiper-slide
+      display flex
+      height auto
+
+      .home-blog-card__info
+        flex 1 !important
 
 .map__fg-img
   transform translateZ(0)
@@ -61,7 +77,7 @@ html.lenis
     color var(--primary-color)
 
 @media screen and (min-width 992px)
-  .map-sec__card::before, .features-sec__img-wrap::before, .blog-hero__img-wrap::before
+  .map-sec__card::before, .features-sec__img-wrap::before, .blog-hero__img-wrap::before, .lp-content__img-wrap::before
     position absolute
     content ''
     width calc(100% - 30px)
@@ -181,6 +197,11 @@ input, input:focus, textarea:focus, select:focus, *:focus
   .form__input-1x1-wrap
     align-self stretch
     flex-basis 26% !important
+
+// LPs
+// .lp-content__item.is-reversed
+// .features-sec__info
+// margin-left 80px
 
 // BLOG MAIN ---
 .filter-select__select

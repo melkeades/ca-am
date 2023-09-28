@@ -20,11 +20,19 @@ const sel = (e) => document.querySelector(e)
 const selAll = (e) => document.querySelectorAll(e)
 
 const lenis = new Lenis()
-function raf(time) {
-  lenis.raf(time)
-  requestAnimationFrame(raf)
-}
-requestAnimationFrame(raf)
+// function raf(time) {
+//   lenis.raf(time)
+//   requestAnimationFrame(raf)
+// }
+// requestAnimationFrame(raf)
+//
+lenis.on('scroll', ScrollTrigger.update)
+
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000)
+})
+
+gsap.ticker.lagSmoothing(0)
 
 const globalStylesEmbed$ = sel('.global-styles')
 const primColor = getComputedStyle(globalStylesEmbed$).getPropertyValue('color')
@@ -56,6 +64,9 @@ switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'contest':
     contest()
     break
+  case 'lp':
+    lp()
+    break
   case '':
     console.log('no data-page provided')
     break
@@ -83,6 +94,75 @@ function blogIntroSec() {
       end: 'bottom top',
       scrub: 1,
     })
+  })
+}
+function lp() {
+  const lpItem$a = selAll('.lp-content__item')
+  const lpContentSec$a = selAll('.lp-content-sec')
+  lpContentSec$a.forEach((item) => {
+    const lpContentBg$ = item.querySelector('.lp-content__bg-wrap')
+    const lpContentBgSt$ = item.querySelector('.lp-content__bg-anist')
+
+    const lpBgScTl = gsap.timeline({ defaults: { ease: 'none', duration: 1 } }).to(lpContentBgSt$, { y: '-100vh' }, 0)
+    const qwe = ScrollTrigger.create({
+      animation: lpBgScTl,
+      trigger: item,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: true,
+      pin: lpContentBg$,
+      delay: 0.0,
+    })
+    // qwe.normalizeScroll(true)
+  })
+  lpItem$a.forEach((item) => {
+    const imgWrap = item.querySelector('.lp-content__img-wrap')
+    const imgWrapOut = item.querySelector('.lp-content__img-wrap-out')
+    const info = item.querySelector('.lp-content__info')
+    const imgAniSt$ = item.querySelector('.lp-content__img-anist')
+
+    const featuresScrollTl = gsap
+      .timeline({ defaults: { ease: 'power4.out', duration: 3 } })
+      // .to(imgWrap, { marginLeft: 80, marginRight: 80 }, '0')
+      .from(imgWrap, { opacity: 0, y: 100 }, 0)
+      .from(info, { opacity: 0, y: 100 }, 0.3)
+    ScrollTrigger.create({
+      animation: featuresScrollTl,
+      trigger: item,
+      start: 'top 60%',
+      duration: { min: 0.2, max: 1 },
+      toggleActions: 'play none none reverse',
+    })
+    ScrollTrigger.create({
+      animation: gsap
+        .timeline({ defaults: { ease: 'none', duration: 5 } })
+        .fromTo(imgAniSt$, { y: '10%' }, { y: '-10%' }, 0)
+        .from(imgWrap, { y: '100px' }, 0),
+      trigger: item,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+    })
+  })
+  const lpImgSec$a = selAll('.lp-bg-image-sec')
+  lpImgSec$a.forEach((item) => {
+    const lpImgBg$ = item.querySelector('.lp-bg-image__bg-img')
+    const lpImgBgSt$ = item.querySelector('.lp-bg-image__bg-img-anist')
+    const lpImgInfoIn$ = item.querySelector('.lp-bg-image__info-aniin')
+
+    const lpBgScTl = gsap
+      .timeline({ defaults: { ease: 'none', duration: 5 } })
+      .fromTo(lpImgBgSt$, { scaleY: '100%', y: '0vh', transformOrigin: '0 0' }, { scaleY: '200%', y: '-2vh' }, 0)
+      .fromTo(lpImgInfoIn$, { y: '30vh' }, { y: '-30vh' }, 0)
+    // .from(lpImgInfoIn$, { opacity: 0, duration: 1 }, 1.2)
+    const qwe = ScrollTrigger.create({
+      animation: lpBgScTl,
+      trigger: item,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+    })
+    // qwe.normalizeScroll(true)
   })
 }
 function contest() {
@@ -201,7 +281,7 @@ function blog() {
 
       gsap
         .timeline({ defaults: { ease: 'power4.out', duration: 3 } })
-        .from('html', { '--blog-hero__img-outline-width': 'calc(100% - 300px)', duration: 1 }, 0)
+        .fromTo('html', { '--blog-hero__img-outline-width': 'calc(100% - 300px)', duration: 1 }, { '--blog-hero__img-outline-width': '100%', duration: 1 }, 0)
         .fromTo(heroImgWrap, { width: '100%' }, { width: 520 }, '-=1.4')
         .from(heroInfo, { opacity: 0, y: 100 }, 0)
 
@@ -342,8 +422,8 @@ function home() {
   const mapCards$ = sel(mapCards_) // swiper-wrapper
   const mapCardWrap$a = selAll(mapCardWrap_) // swiper-slide
 
-  const blogSlider$ = sel('.blog__items-wrap')
-  const blogWrapper$ = sel('.blog-post__items')
+  const blogSlider$ = sel('.home-blog__items-wrap')
+  const blogWrapper$ = sel('.home-blog__items')
   const blogCard$a = selAll('.home-blog-card')
 
   const mapSec_ = 'map-sec'
@@ -371,11 +451,15 @@ function home() {
   let mapDotsObserver
 
   mm.add('(min-width: 992px)', () => {
+    const cards = selAll('.home-blog-card')
     aboutStTl = gsap
-      .timeline({ defaults: { duration: 3 } })
+      .timeline({ defaults: { duration: 3, ease: 'none' } })
       .set('.home-blog-sec__bg-wrap', { clipPath: 'inset(50px round 25px)' })
+      .from('.home-blog-card', { y: 50 }, 0)
       .to('.home-blog-sec__bg-wrap', { clipPath: 'inset(0px round 0px)' }, '<')
-      .to('.home-blog-sec__bg', { scale: 1.06 }, '<')
+      .to('.home-blog-sec__bg', { scale: 1.04 }, '<')
+      .from('.home-blog__title', { opacity: 0 }, '<')
+
     aboutStAnimation = ScrollTrigger.create({
       animation: aboutStTl,
       trigger: blogSec$,
@@ -536,6 +620,7 @@ function home() {
       })
     })
   })
+
   mm.add('(max-width: 991px)', () => {
     blogSlider$.classList.add('swiper')
     blogWrapper$.classList.add('swiper-wrapper')
@@ -547,10 +632,10 @@ function home() {
     mapCardWrap$a.forEach((el) => {
       el.classList.add('swiper-slide')
     })
-    blogSwiper = new Swiper('.blog__items-wrap', {
+    blogSwiper = new Swiper('.home-blog__items-wrap', {
       slidesPerView: 1,
       slidesPerGroup: 1,
-      spaceBetween: 40,
+      spaceBetween: 16,
       // modules: [Autoplay],
       speed: 1000,
       autoplay: {
