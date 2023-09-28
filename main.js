@@ -97,6 +97,23 @@ function blogIntroSec() {
   })
 }
 function lp() {
+  const lpHero$ = sel('.lp-hero')
+  const lpHeroInfo$ = sel('.lp-hero__info')
+  const lpHeroTitle$ = sel('.lp-hero__title')
+  const lpHeroSubtitle$ = sel('.lp-hero__subtitle')
+  const lpHeroP$ = sel('.lp-hero__p')
+  const lpHeroIntroTl = gsap
+    .timeline({ defaults: { ease: 'power4.out', duration: 1 } })
+    .from(lpHeroTitle$, { y: '100%' }, 0)
+    .from(lpHeroSubtitle$, { opacity: 0 }, 0.5)
+    .from(lpHeroP$, { opacity: 0 }, 0.8)
+  ScrollTrigger.create({
+    animation: gsap.timeline().fromTo(lpHeroInfo$, { y: '20%' }, { y: '-30%' }),
+    trigger: lpHero$,
+    start: 'top top',
+    end: 'bottom top',
+    scrub: 1,
+  })
   const lpItem$a = selAll('.lp-content__item')
   const lpContentSec$a = selAll('.lp-content-sec')
   lpContentSec$a.forEach((item) => {
@@ -117,6 +134,7 @@ function lp() {
   })
   lpItem$a.forEach((item) => {
     const imgWrap = item.querySelector('.lp-content__img-wrap')
+    const imgWrapOut = item.querySelector('.lp-content__img-wrap-out')
     const info = item.querySelector('.lp-content__info')
     const imgAniSt$ = item.querySelector('.lp-content__img-anist')
 
@@ -133,8 +151,10 @@ function lp() {
       toggleActions: 'play none none reverse',
     })
     ScrollTrigger.create({
-      animation: gsap.timeline({ defaults: { ease: 'none', duration: 5 } }).fromTo(imgAniSt$, { y: '10%' }, { y: '-10%' }, 0),
-      // .from(imgWrap, { y: '100px' }, 0),
+      animation: gsap
+        .timeline({ defaults: { ease: 'none', duration: 5 } })
+        .fromTo(imgAniSt$, { y: '10%' }, { y: '-10%' }, 0)
+        .fromTo(imgWrapOut, { y: '10vh' }, { y: '-10vh' }, 0),
       trigger: item,
       start: 'top bottom',
       end: 'bottom top',
