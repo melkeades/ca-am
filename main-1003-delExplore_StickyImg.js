@@ -118,29 +118,6 @@ function lp() {
   // document.querySelector('.lp-hero__bg').style.opacity = defaultImgOpacity
 
   mm.add('(min-width: 992px)', () => {
-    const featuresItem$a = selAll('.features-sec__item')
-    const featuresImg_ = 'features-sec__img'
-    const featuresImgWrap_ = 'features-sec__img-wrap'
-    const featuresInfo_ = 'features-sec__info'
-    featuresItem$a.forEach((item) => {
-      const img = item.querySelector('.' + featuresImg_)
-      const imgWrap = item.querySelector('.' + featuresImgWrap_)
-      const info = item.querySelector('.' + featuresInfo_)
-
-      const featuresScrollTl = gsap
-        .timeline({ defaults: { ease: 'power2.out', duration: 2 } })
-        .to(imgWrap, { marginLeft: 80, marginRight: 80 }, '0')
-        .from(imgWrap, { width: '100%' }, '0')
-        .from(info, { opacity: 0, y: 100 }, '0')
-      ScrollTrigger.create({
-        animation: featuresScrollTl,
-        trigger: item,
-        start: 'top 80%',
-        duration: { min: 0.2, max: 1 },
-        toggleActions: 'play none none reverse',
-      })
-    })
-    // --------------
     const lpItem$a = selAll('.lp-content__item')
     const lpContentSec$a = selAll('.lp-content-sec')
     lpContentSec$a.forEach((item) => {
@@ -159,6 +136,35 @@ function lp() {
       })
       // qwe.normalizeScroll(true)
     })
+    lpItem$a.forEach((item) => {
+      const imgWrap = item.querySelector('.lp-content__img-wrap')
+      const imgWrapOut = item.querySelector('.lp-content__img-wrap-out')
+      const info = item.querySelector('.lp-content__info')
+      const imgAniSt$ = item.querySelector('.lp-content__img-anist')
+
+      const featuresScrollTl = gsap
+        .timeline({ defaults: { ease: 'power4.out', duration: 3 } })
+        // .to(imgWrap, { marginLeft: 80, marginRight: 80 }, '0')
+        .from(imgWrap, { opacity: 0, y: 100 }, 0)
+        .from(info, { opacity: 0, y: 100 }, 0.3)
+      ScrollTrigger.create({
+        animation: featuresScrollTl,
+        trigger: item,
+        start: 'top 60%',
+        duration: { min: 0.2, max: 1 },
+        toggleActions: 'play none none reverse',
+      })
+      ScrollTrigger.create({
+        animation: gsap
+          .timeline({ defaults: { ease: 'none', duration: 5 } })
+          .fromTo(imgAniSt$, { y: '10%' }, { y: '-10%' }, 0)
+          .fromTo(imgWrapOut, { y: '10vh' }, { y: '-10vh' }, 0),
+        trigger: item,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      })
+    })
     const lpImgSec$a = selAll('.lp-bg-image-sec')
     lpImgSec$a.forEach((item) => {
       const lpImgBg$ = item.querySelector('.lp-bg-image__bg-img')
@@ -167,7 +173,7 @@ function lp() {
 
       const lpBgScTl = gsap
         .timeline({ defaults: { ease: 'none', duration: 5 } })
-        .fromTo(lpImgBgSt$, { scaleY: '100%', transformOrigin: '0 bottom' }, { scaleY: '150%' }, 0)
+        .fromTo(lpImgBgSt$, { scaleY: '100%', y: '0vh', transformOrigin: '0 0' }, { scaleY: '200%', y: '-2vh' }, 0)
         .fromTo(lpImgInfoIn$, { y: '30vh' }, { y: '-30vh' }, 0)
       // .from(lpImgInfoIn$, { opacity: 0, duration: 1 }, 1.2)
       const qwe = ScrollTrigger.create({
