@@ -58,6 +58,9 @@ switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'blog-post':
     blogPost()
     break
+  case 'blog-post-new':
+    blogPostNew()
+    break
   case 'news':
     news()
     break
@@ -386,6 +389,24 @@ function blogPost() {
     videoFrame.src = ytLink
     console.log(ytLink)
   }
+}
+function blogPostNew() {
+  // blogPost()
+  blogIntroSec()
+  const postBgWrap$ = sel('.post__bg-wrap')
+  const postBg$ = sel('.post__bg-st')
+
+  const postBgTl = gsap.timeline({ defaults: { ease: 'none', duration: 1 } }).fromTo(postBg$, { y: '0vh' }, { y: '-100vh' }, 0)
+  const postBgSt = ScrollTrigger.create({
+    animation: postBgTl,
+    trigger: '.page-wrapper',
+    start: 'top+=1 top',
+    // endTrigger: postBgWrap$,
+    end: 'bottom+=100px',
+    scrub: true,
+    // pin: postBg$,
+    // delay: 0.0,
+  })
 }
 
 function home() {
