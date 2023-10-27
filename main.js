@@ -70,6 +70,9 @@ switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'lp':
     lp()
     break
+  case 'lp-light':
+    lpLight()
+    break
   case '':
     console.log('no data-page provided')
     break
@@ -143,46 +146,52 @@ function lp() {
         toggleActions: 'play none none reverse',
       })
     })
-    // --------------
-    const lpItem$a = selAll('.lp-content__item')
-    const lpContentSec$a = selAll('.lp-content-sec')
-    lpContentSec$a.forEach((item) => {
-      const lpContentBg$ = item.querySelector('.lp-content__bg-wrap')
-      const lpContentBgSt$ = item.querySelector('.lp-content__bg-anist')
-
-      const lpBgScTl = gsap.timeline({ defaults: { ease: 'none', duration: 1 } }).to(lpContentBgSt$, { y: '-100vh' }, 0)
-      const qwe = ScrollTrigger.create({
-        animation: lpBgScTl,
-        trigger: item,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: true,
-        pin: lpContentBg$,
-        delay: 0.0,
-      })
-      // qwe.normalizeScroll(true)
-    })
-    const lpImgSec$a = selAll('.lp-bg-image-sec')
-    lpImgSec$a.forEach((item) => {
-      const lpImgBg$ = item.querySelector('.lp-bg-image__bg-img')
-      const lpImgBgSt$ = item.querySelector('.lp-bg-image__bg-img-anist')
-      const lpImgInfoIn$ = item.querySelector('.lp-bg-image__info-aniin')
-
-      const lpBgScTl = gsap
-        .timeline({ defaults: { ease: 'none', duration: 5 } })
-        .fromTo(lpImgBgSt$, { scaleY: '100%', transformOrigin: '0 bottom' }, { scaleY: '150%' }, 0)
-        .fromTo(lpImgInfoIn$, { y: '30vh' }, { y: '-30vh' }, 0)
-      // .from(lpImgInfoIn$, { opacity: 0, duration: 1 }, 1.2)
-      const qwe = ScrollTrigger.create({
-        animation: lpBgScTl,
-        trigger: item,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-      })
-      // qwe.normalizeScroll(true)
-    })
   })
+  // featured sec from homepage ---
+  const lpContentSec$a = selAll('.lp-content-sec')
+  lpContentSec$a.forEach((item) => {
+    const lpContentBg$ = item.querySelector('.lp-content__bg-wrap')
+    const lpContentBgSt$ = item.querySelector('.lp-content__bg-anist')
+    gsap.set(lpContentBg$, { y: '-100%' })
+
+    const lpBgScTl = gsap.timeline({ defaults: { ease: 'none', duration: 1 } }).to(lpContentBgSt$, { y: '-100vh' }, 0)
+    const qwe = ScrollTrigger.create({
+      animation: lpBgScTl,
+      trigger: item,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+      pin: lpContentBg$,
+      delay: 0.0,
+    })
+    item.querySelector('.pin-spacer').style.overflow = 'hidden'
+
+    // qwe.normalizeScroll(true)
+  })
+  // full width background section ---
+  const lpImgSec$a = selAll('.lp-bg-image-sec')
+  lpImgSec$a.forEach((item) => {
+    const lpImgBg$ = item.querySelector('.lp-bg-image__bg-img')
+    const lpImgBgSt$ = item.querySelector('.lp-bg-image__bg-img-anist')
+    const lpImgInfoIn$ = item.querySelector('.lp-bg-image__info-aniin')
+
+    const lpBgScTl = gsap
+      .timeline({ defaults: { ease: 'none', duration: 5 } })
+      .fromTo(lpImgBgSt$, { scaleY: '100%', transformOrigin: '0 bottom' }, { scaleY: '150%' }, 0)
+      .fromTo(lpImgInfoIn$, { y: '30vh' }, { y: '-30vh' }, 0)
+    // .from(lpImgInfoIn$, { opacity: 0, duration: 1 }, 1.2)
+    const qwe = ScrollTrigger.create({
+      animation: lpBgScTl,
+      trigger: item,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+    })
+    // qwe.normalizeScroll(true)
+  })
+}
+function lpLight() {
+  lp()
 }
 function contest() {
   // console.log('co')
