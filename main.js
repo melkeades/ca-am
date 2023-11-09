@@ -73,6 +73,9 @@ switch (sel('.page-wrapper').getAttribute('data-page')) {
   case 'lp-light':
     lpLight()
     break
+  case 'lp-light-v2':
+    lpLightV2()
+    break
   case '':
     console.log('no data-page provided')
     break
@@ -180,18 +183,93 @@ function lp() {
       .fromTo(lpImgBgSt$, { scaleY: '100%', transformOrigin: '0 bottom' }, { scaleY: '150%' }, 0)
       .fromTo(lpImgInfoIn$, { y: '30vh' }, { y: '-30vh' }, 0)
     // .from(lpImgInfoIn$, { opacity: 0, duration: 1 }, 1.2)
-    const qwe = ScrollTrigger.create({
+    ScrollTrigger.create({
       animation: lpBgScTl,
       trigger: item,
       start: 'top bottom',
       end: 'bottom top',
       scrub: true,
     })
-    // qwe.normalizeScroll(true)
   })
 }
 function lpLight() {
   lp()
+}
+function lpLightV2() {
+  mm.add('(min-width: 992px)', () => {
+    const featuresItem$a = selAll('.features-sec__item')
+    const featuresImg_ = 'features-sec__img'
+    const featuresImgWrap_ = 'features-sec__img-wrap'
+    const featuresInfo_ = 'features-sec__info'
+    featuresItem$a.forEach((item) => {
+      const img = item.querySelector('.' + featuresImg_)
+      const imgWrap = item.querySelector('.' + featuresImgWrap_)
+      const info = item.querySelector('.' + featuresInfo_)
+
+      const featuresScrollTl = gsap
+        .timeline({ defaults: { ease: 'power2.out', duration: 2 } })
+        .to(imgWrap, { marginLeft: 80, marginRight: 80 }, '0')
+        .from(imgWrap, { width: '100%' }, '0')
+        .from(info, { opacity: 0, y: 100 }, '0')
+      ScrollTrigger.create({
+        animation: featuresScrollTl,
+        trigger: item,
+        start: 'top 80%',
+        duration: { min: 0.2, max: 1 },
+        toggleActions: 'play none none reverse',
+      })
+    })
+  })
+  // full width background section ---
+  const lpImgSec$a = selAll('.lp-bg-image-sec')
+  lpImgSec$a.forEach((item) => {
+    const lpImgBg$ = item.querySelector('.lp-bg-image__bg-img')
+    const lpImgBgSt$ = item.querySelector('.lp-bg-image__bg-img-anist')
+    const lpImgInfoIn$ = item.querySelector('.lp-bg-image__info-aniin')
+
+    const lpBgScTl = gsap
+      .timeline({ defaults: { ease: 'none', duration: 5 } })
+      .fromTo(lpImgBgSt$, { scaleY: '100%', transformOrigin: '0 bottom' }, { scaleY: '150%' }, 0)
+      .fromTo(lpImgInfoIn$, { y: '30vh' }, { y: '-30vh' }, 0)
+    // .from(lpImgInfoIn$, { opacity: 0, duration: 1 }, 1.2)
+    ScrollTrigger.create({
+      animation: lpBgScTl,
+      trigger: item,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+    })
+  })
+  // parallax madness. madness? madness?! THIS IS AKM!!! ---
+  const scInit = (sectionClassName = '', className = '', distance = 0, isBg = false) => {
+    const sec$ = sel('.' + sectionClassName)
+    const el$ = sel('.' + className)
+    const shift = isBg ? distance * -1 : distance
+    return ScrollTrigger.create({
+      animation: gsap.fromTo(el$, { y: shift }, { y: shift * -1, ease: 'none' }),
+      trigger: sec$,
+      // trigger: '.features__cloud-1',
+      start: 'top bottom',
+      end: `bottom top`,
+      // end: `bottom+=${distance}px top`,
+      markers: true,
+      scrub: true,
+      delay: 0.0,
+    })
+  }
+  // setTimeout(() => {}, 300)
+  const sec1 = 'lp-content-sec--blue'
+  scInit(sec1, 'features__cloud-1-st', 150, true)
+  scInit(sec1, 'features__cloud-2a-st', 250, true)
+  scInit(sec1, 'features__cloud-2b-st', 350, true)
+  const sec2 = 'lp-content-sec--green'
+  scInit(sec2, 'features__leaf-1-st', 600)
+  scInit(sec2, 'features__leaf-2-st', 70)
+  scInit(sec2, 'features__leaf-3-st', 150)
+  scInit(sec2, 'lp-content__tree-1-st', 120, true)
+  scInit(sec2, 'lp-content__tree-2-st', 200, true)
+  scInit(sec2, 'lp-content__tree-3-st', 170, true)
+  // scInit(sec2, 'features__cloud-2b-st', 50, true)
 }
 function contest() {
   // console.log('co')
