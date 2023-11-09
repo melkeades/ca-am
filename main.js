@@ -241,35 +241,29 @@ function lpLightV2() {
     })
   })
   // parallax madness. madness? madness?! THIS IS AKM!!! ---
-  const scInit = (sectionClassName = '', className = '', distance = 0, isBg = false) => {
-    const sec$ = sel('.' + sectionClassName)
-    const el$ = sel('.' + className)
+  const stInit = (sectionClassName = '', elClassName = '', distance = 0, isBg = false) => {
     const shift = isBg ? distance * -1 : distance
     return ScrollTrigger.create({
-      animation: gsap.fromTo(el$, { y: shift }, { y: shift * -1, ease: 'none' }),
-      trigger: sec$,
-      // trigger: '.features__cloud-1',
+      animation: gsap.fromTo(elClassName, { y: shift }, { y: shift * -1, ease: 'none' }),
+      trigger: sectionClassName,
       start: 'top bottom',
       end: `bottom top`,
-      // end: `bottom+=${distance}px top`,
-      markers: true,
+      // markers: true,
       scrub: true,
       delay: 0.0,
     })
   }
-  // setTimeout(() => {}, 300)
-  const sec1 = 'lp-content-sec--blue'
-  scInit(sec1, 'features__cloud-1-st', 150, true)
-  scInit(sec1, 'features__cloud-2a-st', 250, true)
-  scInit(sec1, 'features__cloud-2b-st', 350, true)
-  const sec2 = 'lp-content-sec--green'
-  scInit(sec2, 'features__leaf-1-st', 600)
-  scInit(sec2, 'features__leaf-2-st', 70)
-  scInit(sec2, 'features__leaf-3-st', 150)
-  scInit(sec2, 'lp-content__tree-1-st', 120, true)
-  scInit(sec2, 'lp-content__tree-2-st', 200, true)
-  scInit(sec2, 'lp-content__tree-3-st', 170, true)
-  // scInit(sec2, 'features__cloud-2b-st', 50, true)
+  const sec1 = '.lp-content-sec--blue'
+  stInit(sec1, '.features__cloud-1-st', 150, true)
+  stInit(sec1, '.features__cloud-2a-st', 250, true)
+  stInit(sec1, '.features__cloud-2b-st', 350, true)
+  const sec2 = '.lp-content-sec--green'
+  stInit(sec2, '.features__leaf-1-st', 600)
+  stInit(sec2, '.features__leaf-2-st', 70)
+  stInit(sec2, '.features__leaf-3-st', 150)
+  stInit(sec2, '.lp-content__tree-1-st', 120, true)
+  stInit(sec2, '.lp-content__tree-2-st', 200, true)
+  stInit(sec2, '.lp-content__tree-3-st', 170, true)
 }
 function contest() {
   // console.log('co')
