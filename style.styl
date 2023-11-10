@@ -282,5 +282,9 @@ input, input:focus, textarea:focus, select:focus, *:focus
 
 // LANDING PAGE - LIGHT
 .lp-content-sec--green, .lp-content-sec--blue 
-  .features-sec__img-wrap::before
-    border-color rgba(255,255,255, 0)
+  .features-sec__img-wrap
+    z-index 30
+    &::before
+      // border-color white
+.lp-content-sec--blue .features-sec__img-wrap::before
+    border-color: white

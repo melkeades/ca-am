@@ -247,7 +247,7 @@ function lpLightV2() {
       animation: gsap.fromTo(elClassName, { y: shift }, { y: shift * -1, ease: 'none' }),
       trigger: sectionClassName,
       start: 'top bottom',
-      end: `bottom top`,
+      end: 'bottom top',
       // markers: true,
       scrub: true,
       delay: 0.0,
