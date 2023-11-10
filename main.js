@@ -193,7 +193,7 @@ function lp() {
   })
 }
 function lpLight() {
-  lp()
+  lpLightV2()
 }
 function lpLightV2() {
   mm.add('(min-width: 992px)', () => {
@@ -257,7 +257,7 @@ function lpLightV2() {
   stInit(sec1, '.features__cloud-1-st', 150, true)
   stInit(sec1, '.features__cloud-2a-st', 250, true)
   stInit(sec1, '.features__cloud-2b-st', 350, true)
-  const sec2 = '.lp-content-sec--green'
+  const sec2 = '.lp-content-sec--2'
   stInit(sec2, '.features__leaf-1-st', 600)
   stInit(sec2, '.features__leaf-2-st', 70)
   stInit(sec2, '.features__leaf-3-st', 150)
