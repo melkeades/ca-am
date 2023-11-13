@@ -106,7 +106,28 @@ function blogIntroSec() {
   })
 }
 function lp() {
-  // featured sec from homepage ---
+  console.log(lpLightThem)
+
+  // const lpHero$ = sel('.lp-hero')
+  // const lpHeroInfo$ = sel('.lp-hero__info')
+  // const lpHeroTitle$ = sel('.lp-hero__title')
+  // const lpHeroSubtitle$ = sel('.lp-hero__subtitle')
+  // const lpHeroP$ = sel('.lp-hero__p')
+  // const lpHeroIntroTl = gsap
+  //   .timeline({ defaults: { ease: 'power4.out', duration: 1 } })
+  //   .from(lpHeroTitle$, { y: '100%' }, 0)
+  //   .from(lpHeroSubtitle$, { opacity: 0 }, 0.5)
+  //   .from(lpHeroP$, { opacity: 0 }, 0.8)
+  // ScrollTrigger.create({
+  //   animation: gsap.timeline().fromTo(lpHeroInfo$, { y: '30%' }, { y: '-40%' }),
+  //   trigger: lpHero$,
+  //   start: 'top top',
+  //   end: 'bottom top',
+  //   scrub: 1,
+  // })
+  // console.log(heroImgOpacity, bgImgOpacity, defaultImgOpacity)
+  // document.querySelector('.lp-hero__bg').style.opacity = defaultImgOpacity
+
   mm.add('(min-width: 992px)', () => {
     const featuresItem$a = selAll('.features-sec__item')
     const featuresImg_ = 'features-sec__img'
@@ -131,56 +152,27 @@ function lp() {
       })
     })
   })
-  if (lpLightThem) {
-    // featured sec light theme ---
-    const stInit = (sectionClassName = '', elClassName = '', distance = 0, isBg = false) => {
-      const shift = isBg ? distance * -1 : distance
-      return ScrollTrigger.create({
-        animation: gsap.fromTo(elClassName, { y: shift }, { y: shift * -1, ease: 'none' }),
-        trigger: sectionClassName,
-        start: 'top bottom',
-        end: 'bottom top',
-        // markers: true,
-        scrub: true,
-        delay: 0.0,
-      })
-    }
-    const sec1 = '.lp-content-sec--blue'
-    stInit(sec1, '.features__cloud-1-st', 150, true)
-    stInit(sec1, '.features__cloud-2a-st', 250, true)
-    stInit(sec1, '.features__cloud-2b-st', 350, true)
-    const sec2 = '.lp-content-sec--2'
-    stInit(sec2, '.features__leaf-1-st', 600)
-    stInit(sec2, '.features__leaf-2-st', 70)
-    stInit(sec2, '.features__leaf-3-st', 150)
-    stInit(sec2, '.lp-content__tree-1-st', 120, true)
-    stInit(sec2, '.lp-content__tree-2-st', 200, true)
-    stInit(sec2, '.lp-content__tree-3-st', 170, true)
-  } else {
-    // featured sec dark them ---
+  // featured sec from homepage ---
+  const lpContentSec$a = selAll('.lp-content-sec--dark')
+  lpContentSec$a.forEach((item) => {
+    const lpContentBg$ = item.querySelector('.lp-content__bg-wrap')
+    const lpContentBgSt$ = item.querySelector('.lp-content__bg-anist')
+    gsap.set(lpContentBg$, { y: '-100%' })
 
-    const lpContentSec$a = selAll('.lp-content-sec--dark')
-    console.log(lpContentSec$a)
-    lpContentSec$a.forEach((item) => {
-      const lpContentBg$ = item.querySelector('.lp-content__bg-wrap')
-      const lpContentBgSt$ = item.querySelector('.lp-content__bg-anist')
-      gsap.set(lpContentBg$, { y: '-100%' })
-
-      const lpBgScTl = gsap.timeline({ defaults: { ease: 'none', duration: 1 } }).to(lpContentBgSt$, { y: '-100vh' }, 0)
-      const qwe = ScrollTrigger.create({
-        animation: lpBgScTl,
-        trigger: item,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-        pin: lpContentBg$,
-        delay: 0.0,
-      })
-      item.querySelector('.pin-spacer').style.overflow = 'hidden'
-
-      // qwe.normalizeScroll(true)
+    const lpBgScTl = gsap.timeline({ defaults: { ease: 'none', duration: 1 } }).to(lpContentBgSt$, { y: '-100vh' }, 0)
+    const qwe = ScrollTrigger.create({
+      animation: lpBgScTl,
+      trigger: item,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+      pin: lpContentBg$,
+      delay: 0.0,
     })
-  }
+    item.querySelector('.pin-spacer').style.overflow = 'hidden'
+
+    // qwe.normalizeScroll(true)
+  })
   // full width background section ---
   const lpImgSec$a = selAll('.lp-bg-image-sec')
   lpImgSec$a.forEach((item) => {
@@ -201,6 +193,79 @@ function lp() {
       scrub: true,
     })
   })
+}
+function lpLight() {
+  lpLightV2()
+}
+function lpLightV2() {
+  mm.add('(min-width: 992px)', () => {
+    const featuresItem$a = selAll('.features-sec__item')
+    const featuresImg_ = 'features-sec__img'
+    const featuresImgWrap_ = 'features-sec__img-wrap'
+    const featuresInfo_ = 'features-sec__info'
+    featuresItem$a.forEach((item) => {
+      const img = item.querySelector('.' + featuresImg_)
+      const imgWrap = item.querySelector('.' + featuresImgWrap_)
+      const info = item.querySelector('.' + featuresInfo_)
+
+      const featuresScrollTl = gsap
+        .timeline({ defaults: { ease: 'power2.out', duration: 2 } })
+        .to(imgWrap, { marginLeft: 80, marginRight: 80 }, '0')
+        .from(imgWrap, { width: '100%' }, '0')
+        .from(info, { opacity: 0, y: 100 }, '0')
+      ScrollTrigger.create({
+        animation: featuresScrollTl,
+        trigger: item,
+        start: 'top 80%',
+        duration: { min: 0.2, max: 1 },
+        toggleActions: 'play none none reverse',
+      })
+    })
+  })
+  // full width background section ---
+  const lpImgSec$a = selAll('.lp-bg-image-sec')
+  lpImgSec$a.forEach((item) => {
+    const lpImgBg$ = item.querySelector('.lp-bg-image__bg-img')
+    const lpImgBgSt$ = item.querySelector('.lp-bg-image__bg-img-anist')
+    const lpImgInfoIn$ = item.querySelector('.lp-bg-image__info-aniin')
+
+    const lpBgScTl = gsap
+      .timeline({ defaults: { ease: 'none', duration: 5 } })
+      .fromTo(lpImgBgSt$, { scaleY: '100%', transformOrigin: '0 bottom' }, { scaleY: '150%' }, 0)
+      .fromTo(lpImgInfoIn$, { y: '30vh' }, { y: '-30vh' }, 0)
+    // .from(lpImgInfoIn$, { opacity: 0, duration: 1 }, 1.2)
+    ScrollTrigger.create({
+      animation: lpBgScTl,
+      trigger: item,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+    })
+  })
+  // parallax madness. madness? madness?! THIS IS AKM!!! ---
+  const stInit = (sectionClassName = '', elClassName = '', distance = 0, isBg = false) => {
+    const shift = isBg ? distance * -1 : distance
+    return ScrollTrigger.create({
+      animation: gsap.fromTo(elClassName, { y: shift }, { y: shift * -1, ease: 'none' }),
+      trigger: sectionClassName,
+      start: 'top bottom',
+      end: 'bottom top',
+      // markers: true,
+      scrub: true,
+      delay: 0.0,
+    })
+  }
+  const sec1 = '.lp-content-sec--blue'
+  stInit(sec1, '.features__cloud-1-st', 150, true)
+  stInit(sec1, '.features__cloud-2a-st', 250, true)
+  stInit(sec1, '.features__cloud-2b-st', 350, true)
+  const sec2 = '.lp-content-sec--2'
+  stInit(sec2, '.features__leaf-1-st', 600)
+  stInit(sec2, '.features__leaf-2-st', 70)
+  stInit(sec2, '.features__leaf-3-st', 150)
+  stInit(sec2, '.lp-content__tree-1-st', 120, true)
+  stInit(sec2, '.lp-content__tree-2-st', 200, true)
+  stInit(sec2, '.lp-content__tree-3-st', 170, true)
 }
 function contest() {
   // console.log('co')
